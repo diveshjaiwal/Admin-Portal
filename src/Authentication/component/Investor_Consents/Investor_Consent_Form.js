@@ -7,10 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
-
-
-
+const token =localStorage.getItem("access_token")
 const Investor_Consent_Form = () =>{
   const location1 = useLocation()
   const navigator = useNavigate()
@@ -47,7 +44,7 @@ const Investor_Consent_Form = () =>{
     
     
     
-    await axios.post(`${Base_url}/api/investor-consent/manage`, {
+    await axios.patch(`${Base_url}/api/investor-consent/manage`, {
 
       
      user_id : location1.state.bio.user_id,

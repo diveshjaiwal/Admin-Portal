@@ -7,9 +7,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Base_url from "../Base_url";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
-
+const token =localStorage.getItem("access_token")
 function Deal_term() {
   const navigator = useNavigate();
   const [items, setItems] = useState();
@@ -85,7 +83,7 @@ const goToAdd = () =>{
                           <td scope="col-2" ><CheckBoxOutlineBlankIcon /></td>
                           <td scope="col">{item.id} </td>
                           <td scope="col">{item.campaign_id}  </td>
-                          <td scope="col">{item.security_id} </td>
+                          <td scope="col">{item.security_type} </td>
                           <td scope="col">{item.discount} </td>
                           <td scope="col">{item.valuation_cap} </td>
                           <td scope="col">{item.min_subscription} </td>

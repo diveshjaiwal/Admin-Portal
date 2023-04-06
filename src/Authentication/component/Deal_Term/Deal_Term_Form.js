@@ -4,19 +4,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios'
 import Base_url from "../Base_url";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNTg4OTE0LCJpYXQiOjE2ODA1MDI1MTQsImp0aSI6IjAyNjMzYzk3MmE0ZDRmYmVhYjQ5NGJhZDViYzFlZmNiIiwidXNlcl9pZCI6OTl9.YC8mqQO89zjKUF4FdtEea2O0_9JsuNruOzhRZOqBWFk"
 
+const token =localStorage.getItem("access_token")
 
 const Deal_Term_Form = () =>{
   const location1 = useLocation();
-  const[security_id, setSecurity_type] = useState(location1.state.bio.security_id);
+  const[security_id, setSecurity_type] = useState(location1.state.bio.security_type);
   const[discount , setDiscount] = useState(location1.state.bio.discount);
   const[valuation_cap , setValuation_cap] = useState(location1.state.bio.valuation_cap);
   const[min_subscription,setMin_subscription] = useState(location1.state.bio.min_subscription);
   const[target,setTarget] = useState(location1.state.bio.target);
   const[end_date , setEnd_date] = useState(location1.state.bio.end_date);
-  const[create,setCreate] = useState(location1.state.bio.create_at);
-  const[Update , setUpdate] = useState(location1.state.bio.update_at);
+  
   const navigator = useNavigate();
   const [patch, setPatch] = useState(null);
 
@@ -39,19 +38,14 @@ const Deal_Term_Form = () =>{
   const updateEnd = (e) =>{
     setEnd_date(e.target.value)
   }
-  const updateCreate = (e) =>{
-    setCreate(e.target.value)
-  }
-  const update = (e) =>{
-    setUpdate(e.target.value)
-  }
 
-  const updateM = async (e) => {
-    await axios.put(`${Base_url}/api/deal_terms/manage`, {
+
+  const goToAdd = async (e) => {
+    await axios.patch(`${Base_url}/api/deal_terms/manage`, {
             
-      id : location1.state.bio.id,
+      deal_term_id : location1.state.bio.id,
       
-      security_type : security_id,
+      security_type_id : +security_id,
       
       discount : discount,
 
@@ -63,9 +57,7 @@ const Deal_Term_Form = () =>{
 
       end_date : end_date,
       
-      created_at : create,
       
-      updated_at : Update,
       
       },
       {headers: {
@@ -95,7 +87,10 @@ const Deal_Term_Form = () =>{
         </div>
         <div className='row'>
           <div className='col-10' style={{marginTop:"150px", marginLeft:"280px"}}>
-          <form style={{padding:"50px"}}>
+          <form style={{padding:"50px"}} onSubmit={e=>{
+            e.preventDefault()
+            goToAdd()
+          }}>
               <h1 style={{textAlign:"center",color:"blueviolet"}}>Update</h1>
               <label for="exampleInputName" className="form-label">Security Type</label>
               <input defaultValue={security_id} type="text" className="form-control" id="exampleInputName" value={security_id} onChange={updateSecurity}/>
@@ -118,13 +113,8 @@ const Deal_Term_Form = () =>{
               <label for="exampleInputBranch" className="form-label">End Date</label>
               <input defaultValue={end_date}  type="date" className="form-control" id="exampleInputBranch" value={end_date} onChange={updateEnd}/>
 
-              <label for="exampleInputpassword" className="form-label">Created At</label>
-              <input defaultValue={create}  type="datetime-local" className="form-control" id="exampleInputPassword1" value={create} onChange={updateCreate}/>
-
-              <label for="exampleInputBranch" className="form-label">Updated At</label>
-              <input defaultValue={update}  type="datetime-local" className="form-control" id="exampleInputBranch" value={Update} onChange={update}/>
-          
-            <button type="submit" onClick={updateM} className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}}>Submit</button>
+              
+            <button type="submit"  className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}}>Submit</button>
         </form>
         </div>
         </div>

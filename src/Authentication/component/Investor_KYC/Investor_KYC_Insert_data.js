@@ -4,36 +4,65 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Base_url from "../Base_url";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
-
-
+const token =localStorage.getItem("access_token")
 const Investor_KYC_Insert_data= () =>{
   const navigator = useNavigate();
+  
   const[id , setId] = useState();  
-  const[name , setName] = useState();
-  const[roll , setRoll] = useState();
-  const[reg , setReg] = useState();
-  const[branch,setBranch] = useState();
-  const[pass,setPass] = useState();
+  const[pan_card , setpan_card] = useState();
+  const[birth_date , setbirth_date] = useState();
+  const[birth_month , setbirth_month] = useState();
+  const[birth_year,setbirth_year] = useState();
+  
 
   const updateId = (e) =>{
     setId(e.target.value)
   }
-  const updateName = (e) =>{
-    setName(e.target.value)
+  const updatepan_card = (e) =>{
+    setpan_card(e.target.value)
   }
-  const updateRoll = (e) =>{
-    setRoll(e.target.value)
+  const updatebirth_date = (e) =>{
+    setbirth_date(e.target.value)
   }
-  const updateReg = (e) =>{
-    setReg(e.target.value)
+  const updatebirth_month = (e) =>{
+    setbirth_month(e.target.value)
   }
-  const updateBranch = (e) =>{
-    setBranch(e.target.value)
+  const updatebirth_year = (e) =>{
+    setbirth_month(e.target.value)
   }
-  const updatePass = (e) =>{
-    setPass(e.target.value)
-  }
+  
+  const gotoAdd = async(e) => {
+
+    e.preventDefault();
+      
+    const values = {
+      user_id: id,
+      pan_card:pan_card,
+      birth_date:birth_date,
+      birth_month:birth_month,
+      birth_year:birth_year
+    }
+    
+    
+    
+    
+           await axios.post(`${Base_url}/api/investor-kyc/pan/manage`, values , 
+
+            
+            {headers: {
+              Authorization: `Bearer ${token}`,
+            },}
+            )
+    
+    
+    
+    
+    navigator("/home/investor_kyc")
+    
+    
+    
+    
+    }
 
     return(
         <>
@@ -46,30 +75,29 @@ const Investor_KYC_Insert_data= () =>{
         </div>
         <div className='row'>
           <div className='col-10' style={{marginTop:"150px", marginLeft:"280px"}}>
-          <form style={{padding:"20px"}}>
+          <form style={{padding:"20px"}} onSubmit={gotoAdd}>
                 <h1 style={{textAlign:"center",color:"blueviolet"}}>Add Data</h1>
 
                 <label for="exampleInputName" className="form-label">Id</label>
                 <input type="text" className="form-control" id="exampleInputName" value={id} onChange={updateId}/>
 
-                <label for="exampleInputName" className="form-label">Name</label>
-                <input type="text" className="form-control" id="exampleInputName" value={name} onChange={updateName}/>
+                <label for="exampleInputName" className="form-label">pan_card</label>
+                <input type="text" className="form-control" id="exampleInputName" value={pan_card} onChange={updatepan_card}/>
               
               
-                <label for="exampleInputRollnum" className="form-label">RollNum</label>
-                <input  type="number" className="form-control" id="exampleInputRollnum" value={roll} onChange={updateRoll}/>
+                <label for="exampleInputRollnum" className="form-label">birth_date</label>
+                <input  type="number" className="form-control" id="exampleInputRollnum" value={birth_date} onChange={updatebirth_date}/>
               
               
-                <label for="exampleInputRegistrationnum" className="form-label">Registration num</label>
-                <input  type="number" className="form-control" id="exampleInputeRegistrationnum" value={reg} onChange={updateReg}/>
+                <label for="exampleInputRegistrationnum" className="form-label">birth_month</label>
+                <input  type="number" className="form-control" id="exampleInputeRegistrationnum" value={birth_month} onChange={updatebirth_month}/>
               
               
-                <label for="exampleInputBranch" className="form-label">Branch</label>
-                <input  type="text" className="form-control" id="exampleInputBranch" value={branch} onChange={updateBranch}/>
+                <label for="exampleInputBranch" className="form-label">birth_year</label>
+                <input  type="text" className="form-control" id="exampleInputBranch" value={birth_year} onChange={updatebirth_year}/>
               
               
-                <label for="exampleInputpassword" className="form-label">Password</label>
-                <input  type="password" className="form-control" id="exampleInputPassword1" value={pass} onChange={updatePass}/>
+                
                 <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}}>Submit</button>
             </form>
         </div>

@@ -4,16 +4,17 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Base_url from "../Base_url";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
+const token =localStorage.getItem("access_token");
 
 
 const User_Insert_data = () =>{
-   
+
   const[fname , setFname] = useState();
   const[lname , setLname] = useState();
   const[email , setEmail] = useState();
   const[social,setSocial] = useState();
   const [user_type, setuser_type] = useState();
+
   
 
   const navigator = useNavigate();
@@ -34,16 +35,17 @@ const User_Insert_data = () =>{
   const updateuser_type = (e) =>{
     setuser_type(e.target.value)
   }
+  
    
 
   const gotoAdd = async(e) => {
 
 
 
-   const values= {
+   const values1= {
 
             
-           
+        
             
       first_name : fname,
       
@@ -52,38 +54,26 @@ const User_Insert_data = () =>{
       email : email,
       
       social_login : false,
-      user_type : user_type
+      user_type : "INVESTOR",
+      
       
       }
-      console.log(values);
+      console.log(values1);
 
  
     
-    if( fname && lname && email  && social && user_type )
     
-    {
-    
-           await axios.post(`${Base_url}/api/users/sign-up`, values,
+           await axios.post(`${Base_url}/api/users/sign-up`, values1,
             {headers: {
               Authorization: `Bearer ${token}`,
             },}
             )
     
-    
-    
+            
     
     navigator("/home/user")
     
-    }
-    
-    else
-    
-    {
-    
-    alert("Please fill all the section")
-    
-    }
-    
+ 
     }
 
 
@@ -103,7 +93,6 @@ const User_Insert_data = () =>{
             gotoAdd()}}>
               <h1 style={{textAlign:"center",color:"blueviolet"}}>ADD DATA</h1>
 
-              
 
               <label for="exampleInputName" className="form-label">First Name</label>
               <input type="text" className="form-control" id="exampleInputName" value={fname} onChange={updateFname}/>
@@ -119,7 +108,8 @@ const User_Insert_data = () =>{
 
               <label for="exampleInputRegistrationnum" className="form-label">User Type</label>
               <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={user_type} onChange={updateuser_type}/>
-          
+
+             
             <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}}>Submit</button>
           </form>
         </div>

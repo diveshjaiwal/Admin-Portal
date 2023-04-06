@@ -1,27 +1,28 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState , useEffect } from 'react';
 import Dashboard from '../../Dashboard/Dashboard';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CreateIcon from '@mui/icons-material/Create';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Base_url from "../Base_url";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNTg4OTE0LCJpYXQiOjE2ODA1MDI1MTQsImp0aSI6IjAyNjMzYzk3MmE0ZDRmYmVhYjQ5NGJhZDViYzFlZmNiIiwidXNlcl9pZCI6OTl9.YC8mqQO89zjKUF4FdtEea2O0_9JsuNruOzhRZOqBWFk"
 
 
+const token =localStorage.getItem("access_token")
 
 function Highlights() {
   const navigator = useNavigate();
   const [items , setItems] = useState([]);
-  function update (){
-   navigator("/highlights/highlights_form")
+  function update (item){
+   navigator(`/highlights/${item.id}`, {state : {bio : item}})
   }
 
   useEffect ( () => {
     const getUploadedDocs = async () => {
   
       try {
-          const response = await axios.get(`${Base_url}/api/rewards/manage`,  {
+          const response = await axios.get(`${Base_url}/api/highlights/manage`,  {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -38,10 +39,10 @@ function Highlights() {
       }
 }
 getUploadedDocs();
-})
+},[])
 
 const goToAdd = () =>{
-  navigator("/home/rewards/insert");
+  navigator("/home/highlights/insert");
 }
 
   return (
@@ -55,16 +56,17 @@ const goToAdd = () =>{
         </div>
         <div className='row'>
           <div className='col-10' style={{marginTop:"150px", marginLeft:"300px"}}>
-          <button type="button" class="btn btn-secondary btn-lg" onClick={goToAdd}>Add Rewards</button>
+          <button type="button" class="btn btn-secondary btn-lg" onClick={goToAdd}>Add Highlights Data</button>
             <table class="table">
                 <thead>
                   <tr>
                     <th scope="col"><CheckBoxOutlineBlankIcon /></th>
                     <th scope="col">id</th>
                     <th scope="col">campaign_id</th>
-                    <th scope="col">amount</th>
-                    <th scope="col">product_name</th>
-                    <th scope="col">discounted_price</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">HightLight Image</th>
+                    <th scope="col">Status</th>
                     <th scope="col">created_at</th>
                     <th scope="col">updated_at</th>
                     <th scope="col">Action</th>
@@ -79,12 +81,13 @@ const goToAdd = () =>{
                           <td scope="col-2" ><CheckBoxOutlineBlankIcon /></td>
                           <td scope="col-2" >{item.id}</td>
                           <td scope="col-2" >{item.campaign_id}</td>
-                          <td scope="col-2" >{item.amount}</td>
-                          <td scope="col-2" >{item.product_name}</td>
-                          <td scope="col-2" >{item.discounted_price}</td>
+                          <td scope="col-2" >{item.title}</td>
+                          <td scope="col-2" >{item.description}</td>
+                          <td scope="col-2" >{item.highlight_image ? "null" : "null"}</td>
+                          <td scope="col-2" >{item.status}</td>
                           <td scope="col-2" >{item.created_at}</td>
                           <td scope="col-2" >{item.updated_at} </td>
-                          <td scope="col-2" ><CreateIcon onClick={update} /></td>
+                          <td scope="col-2" ><CreateIcon onClick={() => {update(item)}} /></td>
                           </tr>
                         </>
                       )

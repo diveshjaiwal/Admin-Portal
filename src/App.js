@@ -40,6 +40,10 @@ import User_Insert_data from "./Authentication/component/User/User_Insert_data";
 import People_Insert_data from "./Authentication/component/People/People_Insert_data";
 import Press_Insert_data from "./Authentication/component/Press/Press_Insert_data";
 import Rewards_Insert_data from "./Authentication/component/Rewards/Rewards_Insert_data";
+import Documents from "./Authentication/component/Documents/Documents";
+import Documents_insert_data from "./Authentication/component/Documents/Documents_insert_data";
+import Documents_Form from "./Authentication/component/Documents/Documents_Form";
+
 
 
 
@@ -55,6 +59,7 @@ const App = () =>{
     <Route path="/home/campaign" element={<Campaign />} exact />
     <Route path="/home/deal_term" element={<Deal_term />} exact />
     <Route path="/home/deal_type" element={<Deal_type />} exact />
+    <Route path="/home/documents" element={<Documents />} exact />
     <Route path="/home/faqs" element={<FAQs />} exact />
     <Route path="/home/rewards" element={<Rewards />} exact />
     <Route path="/home/highlights" element={<Highlights />} exact />
@@ -67,9 +72,10 @@ const App = () =>{
     <Route path="/company/:id" element={<Company_Form />} exact/> 
     <Route path="/deal_term/:id" element={<Deal_Term_Form />} exact/> 
     <Route path="/deal_type/:id" element={<Deal_Type_Form />} exact/> 
-    <Route path="/faqs/faqs_form" element={<Faqs_Form />} exact/> 
-    <Route path="/highlights/highlights_form" element={<Highlight_Form />} exact/> 
-    <Route path="/investor_Kyc/investor_Kyc_Form" element={<Investor_Kyc_Form />} exact/>   
+    <Route path="/documents/:id" element={<Documents_Form />} exact/> 
+    <Route path="/faqs/:id" element={<Faqs_Form />} exact/> 
+    <Route path="/highlights/:id" element={<Highlight_Form />} exact/> 
+    <Route path="/investor_Kyc/:user_id" element={<Investor_Kyc_Form />} exact/>   
     <Route path="/investor_consents/:user_id" element={<Investor_Consent_Form />} exact/>  
     <Route path="/user/:id" element={<User_Form />} exact/>  
     <Route path="/people/:id" element={<People_Form />} exact/> 
@@ -87,6 +93,9 @@ const App = () =>{
     <Route path="/home/people/insert" element={<People_Insert_data />} exact/>
     <Route path="/home/press/insert" element={<Press_Insert_data/>} exact/>
     <Route path="/home/rewards/insert" element={<Rewards_Insert_data />} exact/>
+    <Route path="/home/documents/insert" element={<Documents_insert_data />} exact/>
+    
+
     </Routes>
     </>
   )

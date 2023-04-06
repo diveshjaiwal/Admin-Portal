@@ -34,7 +34,7 @@ function Dashboard() {
               {SidebarData.map((item, index) => {
                 return (
                   <li key={index} className={item.cName}
-                    style={location == item.path ? {backgroundColor : "#1a83ff", borderRadius:"15px"} : null}
+                    style={location == item.path || location == item.path1 ? {backgroundColor : "#1a83ff", borderRadius:"15px"} : null}
                   >
                     <Link to={item.path}>
                       {item.icon}
