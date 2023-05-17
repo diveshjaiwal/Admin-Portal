@@ -1,67 +1,124 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import Dashboard from '../../Dashboard/Dashboard';
+import { useLocation, useNavigate } from "react-router-dom";
+import Base_url from "../Base_url";
+import { authAxios } from "../../../Services/auth.service";
 
-const Highlight_Form = () =>{
-  const[name , setName] = useState();
-  const[roll , setRoll] = useState();
-  const[reg , setReg] = useState();
-  const[branch,setBranch] = useState();
-  const[pass,setPass] = useState();
 
-  const updateName = (e) =>{
-    setName(e.target.value)
+const Highlights_Form = () =>{
+const location1 = useLocation();
+  const[title, settitle] = useState(location1.state.bio.title);
+  const[description , setdescription ]= useState(location1.state.bio.description);
+  const[highlight_image , sethighlight_image ]= useState(location1.state.bio.highlight_image);
+  const[status,setStatus] = useState(location1.state.bio.status);
+  const [campaign_id , setcampaign_id] = useState(location1.state.bio.campaign_id);
+  const[items2 , setItems2] =useState([]); 
+
+  const updatetitle = (e) =>{
+    settitle(e.target.value)
   }
-  const updateRoll = (e) =>{
-    setRoll(e.target.value)
+  const updatedescription = (e) =>{
+    setdescription(e.target.value)
   }
-  const updateReg = (e) =>{
-    setReg(e.target.value)
+  const updatehighlight_image = (e) =>{
+    sethighlight_image(e.target.value)
   }
-  const updateBranch = (e) =>{
-    setBranch(e.target.value)
+  const updateStatus = (e) =>{
+    console.log(e.target.value);
+    setStatus(e.target.value)
   }
-  const updatePass = (e) =>{
-    setPass(e.target.value)
+  const navigator = useNavigate();
+  const add =(x)=>{
+    console.log(x);
+    setcampaign_id(x);
   }
 
+  useEffect(()=>{
+    
+
+    const getUploaded = async () => {
+      
+      try {
+          const response = await authAxios.get(`${Base_url}/api/campaign/manage`);
+          console.log(response.data)
+          setItems2(response.data)
+          return response.data;
+      }
+      catch (error) {
+          if (error) {
+              console.log(error)
+          }
+          return error;
+      }
+    }
+    getUploaded();
+    },[])
+
+  const gotoAdd = async() => {
+    const values = { 
+      highlight_id : location1.state.bio.id,
+      campaign_id : +campaign_id,
+      title : title ,
+      description : description , 
+      highlight_image : highlight_image , 
+      status : status,
+       }
+       
+      await authAxios.patch(`${Base_url}/api/highlights/manage`,values);
+     navigator("/home/highlights")
+    }
     return(
-        <>
-          <div className='container-fluid'>
+      <>
+       <div className='container-fluid'>
         <div className='row'>
-          
             <Dashboard />
-          
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"280px"}}>
-          <form style={{padding:"20px"}}>
-              <h1 style={{textAlign:"center",color:"blueviolet"}}>Update</h1>
+          <div className='col-7' style={{marginTop:"130px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}}>
+          <form style={{padding:"40px",borderRadius:"20px"}} onSubmit={e => {
+            e.preventDefault();
+            gotoAdd()
+          }}>
+              <h1 style={{textAlign:"center",color:"#070A52"}}>Update HighLights Data</h1>
 
-              <label for="exampleInputName" className="form-label">Name</label>
-              <input type="text" className="form-control" id="exampleInputName" value={name} onChange={updateName}/>
+              <label for="exampleInputName" className="form-label">Campaign Id</label>
+              <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                <option selected  className="active">Select campaign id</option>
+                {
+                  items2 && items2.map((item) =>{
+                    return (
+                      <option onClick={()=>{add(item.id)}} >{item.id}</option>
+                    )
+                  })
+                }
+                </select>
+              </div>
 
-              <label for="exampleInputRollnum" className="form-label">RollNum</label>
-              <input  type="number" className="form-control" id="exampleInputRollnum" value={roll} onChange={updateRoll}/>
+              <label for="exampleInput" className="form-label">Status</label>
+              <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                <option selected  className="active">Select Option</option>
+                <option onClick={updateStatus}>APPROVED</option>
+                <option onClick={updateStatus}>PENDING</option>      
+                </select>
+              </div>
+
+              <label for="exampleInputRollnum" className="form-label">Title </label>
+              <input  type="text" className="form-control" id="exampleInputRollnum" value={title} onChange={updatetitle}/>
             
-            
-              <label for="exampleInputRegistrationnum" className="form-label">Registration num</label>
-              <input  type="number" className="form-control" id="exampleInputeRegistrationnum" value={reg} onChange={updateReg}/>
-            
-            
-              <label for="exampleInputBranch" className="form-label">Branch</label>
-              <input  type="text" className="form-control" id="exampleInputBranch" value={branch} onChange={updateBranch}/>
-            
-            
-              <label for="exampleInputpassword" className="form-label">Password</label>
-              <input  type="password" className="form-control" id="exampleInputPassword1" value={pass} onChange={updatePass}/>
+              <label for="exampleInputRegistrationnum" className="form-label">Description</label>
+              <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={description} onChange={updatedescription}/>
+
+              <label for="exampleInputRollnum" className="form-label">HighLight Image</label>
+              <input  type="text" className="form-control" id="exampleInputRollnum" value={highlight_image} onChange={updatehighlight_image}/>
           
-            <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}}>Submit</button>
+              <button type="submit" className="btn btn-success" style={{marginTop:"30px"}}>Submit</button>
           </form>
         </div>
         </div>
-      
-        </>
+  </>
     )
 }
-export default Highlight_Form;
+export default Highlights_Form;

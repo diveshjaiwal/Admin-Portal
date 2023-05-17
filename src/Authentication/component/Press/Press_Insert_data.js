@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect } from "react";
 import Dashboard from '../../Dashboard/Dashboard';
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Base_url from "../Base_url";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
-
+import { authAxios } from "../../../Services/auth.service";
 
 const Press_Insert_data = () =>{
-  const[id , setId] = useState();  
+  const[id , setId] = useState(); 
+  const[c_id , setC_id] = useState();
+  const[items , setItems] =useState([]);  
   const[company , setCompany] = useState();
   const[title , setTitle] = useState();
   const[link , setLink] = useState();
@@ -16,9 +15,7 @@ const Press_Insert_data = () =>{
   const[banner,setBanner] = useState();
   const [post, setPost] = React.useState(null);
 
-
   const navigator = useNavigate();
-
   const updateId = (e) =>{
     setId(e.target.value)
   }
@@ -37,23 +34,47 @@ const Press_Insert_data = () =>{
   const updateBanner = (e) =>{
     setBanner(e.target.value)
   }
+  const updateC_id = (e) =>{
+    setC_id(e.target.value)
+  }
+  const updateItems = (e) =>{
+    setItems(e.target.value)
+  }
 
-
-
+  const add =(x)=>{
+    console.log(x);
+    setC_id(x);
+  }
+  
+  useEffect(()=>{
+    const getUploadedDocs = async () => {
+  
+      try {
+          const response = await authAxios.get(`${Base_url}/api/company/manage`);
+          console.log(response.data)
+          setItems(response.data)
+          return response.data;
+      }
+      catch (error) {
+          if (error) {
+              console.log(error)
+          }
+          return error;
+      }
+}
+getUploadedDocs();
+  },[])
   const gotoAdd = async(e) => {
 
     e.preventDefault();
     
-    if(id && company && title&& link && description && banner )
     
-    {
-    
-           await axios.post(`${Base_url}/api/press/manage`, {
+           await authAxios.post(`${Base_url}/api/press/manage`, {
 
             
             id : id,
             
-            company_id : company,
+            company_id : c_id,
             
             title : title,
             
@@ -63,12 +84,7 @@ const Press_Insert_data = () =>{
 
             banners : banner,
             
-          
-            
             },
-            {headers: {
-              Authorization: `Bearer ${token}`,
-            },}
             )
     
     .then(( response) => {
@@ -82,37 +98,31 @@ const Press_Insert_data = () =>{
     navigator("/home/press")
     
     }
-    
-    else
-    
-    {
-    
-    alert("Please fill all the section")
-    
-    }
-    
-    }
-
 
     return(
         <>
           <div className='container-fluid'>
         <div className='row'>
-          
             <Dashboard />
-          
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"280px"}}>
-          <form style={{padding:"20px"}}>
-                <h1 style={{textAlign:"center",color:"blueviolet"}}>Add Data</h1>
+          <div className='col-7' style={{marginTop:"140px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}}>
+          <form style={{padding:"40px",borderRadius:"20px"}}>
+                <h1 style={{textAlign:"center",color:"#070A52",marginBottom:"20px"}}>Add Press Data</h1>
 
-                <label for="exampleInputName" className="form-label">Id</label>
-                <input type="number" className="form-control" id="exampleInputName" value={id} onChange={updateId}/>
-
-                <label for="exampleInputName" className="form-label">Company id</label>
-                <input type="number" className="form-control" id="exampleInputName" value={company} onChange={updateCompany}/>
+                <div class="input-group">
+                  <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                    <option selected  className="active">Select Company Name</option>
+                    {
+                      items && items.map((item) =>{
+                        return (
+                          <option onClick={()=>{add(item.user_id)}} >{item.company_name}</option>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
 
                 <label for="exampleInputRollnum" className="form-label">Title</label>
                 <input  type="text" className="form-control" id="exampleInputRollnum" value={title} onChange={updateTitle}/>
@@ -128,11 +138,10 @@ const Press_Insert_data = () =>{
                 <label for="exampleInputBranch" className="form-label">Banner</label>
                 <input  type="text" className="form-control" id="exampleInputBranch" value={banner} onChange={updateBanner}/>
               
-              <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}} onClick={gotoAdd}>Submit</button>
+              <button type="submit" className="btn btn-success" style={{marginTop:"30px"}} onClick={gotoAdd}>Submit</button>
           </form>
         </div>
         </div>
-     
     </>
     )
 }

@@ -1,24 +1,10 @@
 import React, { useState } from "react";
 import Dashboard from '../../Dashboard/Dashboard';
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Base_url from "../Base_url";
+import { authAxios } from "../../../Services/auth.service";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
-
-const Company_Insert_data = () =>{
-  {
-    
-   
-   
-  
-    
-    
-    
-    
-}
-  
-  const[user_id , setUser_id] = useState();
+const Company_Insert_data = () =>{ 
   const[logo , setLogo] = useState();
   const[founder_linked_in_profile , setfounder_linked_in_profile] = useState();
   const[company , setCompany] = useState();
@@ -32,17 +18,8 @@ const Company_Insert_data = () =>{
   const[reason_mynt , setReason_mynt] = useState();
   const[exist,setExist] = useState();
   const[pitch,setPitch] = useState();
- 
-  
-
   
   const navigator = useNavigate();
-
-
-  
-  const updateUser_id = (e) =>{
-    setUser_id(e.target.value)
-  }
   const updateLogo = (e) =>{
     setLogo(e.target.value)
   }
@@ -82,24 +59,12 @@ const Company_Insert_data = () =>{
   const updatePitch = (e) =>{
     setPitch(e.target.value)
   }
-  
-  
-
-
   const gotoAdd = async(e) => {
 
     e.preventDefault();
     
-    if( user_id && logo && founder_linked_in_profile && company && company_linked_in_profile&& web && pre && pro && traction && revenue && reason_com && reason_mynt && exist && pitch  )
-    
-    {
-    
-           await axios.post(`${Base_url}/api/company/create`, {
-
-            
-            
-              
-            user_id   :         +user_id         ,
+           await authAxios.post(`${Base_url}/api/company/create`, {
+      
             company_logo   :     logo             ,
             founder_linked_in_profile : founder_linked_in_profile,
             company_name   :     company             ,
@@ -116,48 +81,20 @@ const Company_Insert_data = () =>{
             company_pitch   :          pitch        ,
             
             },
-            {headers: {
-              Authorization: `Bearer ${token}`,
-            },}
             )
-    
-    
-    
-    
     navigator("/home/company");
-    
     }
-    
-    else
-    
-    {
-    
-    alert("Please fill all the section");
-    
-    }
-    
-    }
-
-
-
     return(
       <>
           <div className='container-fluid'>
         <div className='row'>
-          
             <Dashboard />
-          
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"350px"}}>
-          <form style={{padding:"20px",borderRadius:"20px"}}>
-              <h1 style={{textAlign:"center",color:"blueviolet"}}>Add Company Data</h1>
-
-              
-
-              <label for="exampleInputName" className="form-label">User Id</label>
-              <input type="number" className="form-control" id="exampleInputName" value={user_id} onChange={updateUser_id}/>
+          <div className='col-7' style={{marginTop:"170px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}}>
+          <form style={{padding:"40px",borderRadius:"20px"}}>
+              <h1 style={{textAlign:"center",color:"#070A52"}}>Add Company Data</h1>
 
               <label for="exampleInputRollnum" className="form-label">Company Logo</label>
               <input  type="link" className="form-control" id="exampleInputRollnum" value={logo} onChange={updateLogo}/>
@@ -201,23 +138,10 @@ const Company_Insert_data = () =>{
               <label for="exampleInputBranch" className="form-label">Company Pitch</label>
               <input  type="link" className="form-control" id="exampleInputBranch" value={pitch} onChange={updatePitch}/>
 
-              
-
-              
-              
-
-              
-              
-
-              
-              
-          
-            <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}} onClick={gotoAdd}>Submit</button>
+            <button type="submit" className="btn btn-success" style={{marginTop:"30px"}} onClick={gotoAdd}>Submit</button>
         </form>
         </div>
         </div>
-      
-    
       </>
     )
 }

@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 import Dashboard from '../../Dashboard/Dashboard';
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
 import Base_url from "../Base_url";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
+import { authAxios } from "../../../Services/auth.service";
 
 
 const User_Form = () =>{
-
   const location1 = useLocation();
   const navigator = useNavigate();
-
-
   const[email , setEmail] = useState(location1.state.bio.email);
   const[social,setSocial] = useState(location1.state.bio.social_login);
   const[profile,setProfile] = useState(location1.state.bio.profile_image);
@@ -49,11 +44,7 @@ const User_Form = () =>{
        
        }
        
-      await axios.patch(`${Base_url}/api/users/manage`,values, 
-            {headers: {
-              Authorization: `Bearer ${token}`,
-            },}
-            )
+      await authAxios.patch(`${Base_url}/api/users/manage`,values);
       
      navigator("/home/user")
     
@@ -69,12 +60,12 @@ const User_Form = () =>{
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"280px"}}>
-          <form style={{padding:"20px"}} onSubmit={e => {
+          <div className='col-7' style={{marginTop:"140px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}}>
+          <form style={{padding:"50px",borderRadius:"20px"}} onSubmit={e => {
             e.preventDefault();
             gotoAdd()
           }}>
-              <h1 style={{textAlign:"center",color:"blueviolet"}}>ADD DATA</h1>
+              <h1 style={{textAlign:"center",color:"#070A52" , marginBottom:"20px"}}>Update User Data</h1>
 
               <label for="exampleInputRollnum" className="form-label">Email</label>
               <input  type="email" className="form-control" id="exampleInputRollnum" value={email} onChange={updateEmail}/>
@@ -83,10 +74,10 @@ const User_Form = () =>{
               <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={social} onChange={updateSocial}/>
 
               
-              <label for="exampleInputRegistrationnum" className="form-label">profile_image</label>
+              <label for="exampleInputRegistrationnum" className="form-label">Profile Image</label>
               <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={profile} onChange={updateProfile}/>
           
-            <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}} >Submit</button>
+            <button type="submit" className="btn btn-success" style={{marginTop:"30px"}} >Submit</button>
           </form>
         </div>
         </div>

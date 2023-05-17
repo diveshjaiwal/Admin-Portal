@@ -1,50 +1,44 @@
 import React, { useState } from "react";
 import Dashboard from '../../Dashboard/Dashboard';
-import axios from "axios";
 import Base_url from "../Base_url";
 import { useLocation, useNavigate } from "react-router-dom";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
+import { authAxios } from "../../../Services/auth.service";
 
 const Company_Form = () =>{
     const navigator = useNavigate()
-    const location = useLocation()
-    const[company_logo,setcompany_logo] = useState();
-    const[founder_linked_in_profile,setfounder_linked_in_profile] = useState();
-    const[company_name,setcompany_name] = useState();
-    const[company_linked_in_profile,setcompany_linked_in_profile] = useState();
-    const[website_url,setwebsite_url] = useState();
-    const[previous_funding,setprevious_funding] = useState();
-    const[product_description,setproduct_description] = useState();
-    const[traction_description,settraction_description] = useState();
-    const[revenue,setrevenue] = useState();
-    const[reason_for_community_round,setreason_for_community_round] = useState();
-    const[reason_for_mynt,setreason_for_mynt] = useState();
-    const[existing_commitments,setexisting_commitments] = useState();
-    const[country,setcountry] = useState();
-    const[state,setstate] = useState();
-    const[city,setcity] = useState();
-    const[pincode,setpincode] = useState();
-    const[company_address,setcompany_address] = useState();
-    const[facebook_link,setfacebook_link] = useState();
-    const[instagram_link,setinstagram_link] = useState();
-    const[legal_name,setlegal_name] = useState();
-    const[cin,setcin] = useState();
-    const[date_of_incorporation,setdate_of_incorporation] = useState();
-    const[incorporation_type,setincorporation_type] = useState();
-    const[sector,setsector] = useState();
-    const[invested_so_far,setinvested_so_far] = useState();
-    const[number_of_employees,setnumber_of_employees] = useState();
-    
-
-
-  
-
+    const location1 = useLocation()
+    const[status,setstatus] = useState(location1.state.bio.status)
+    const[company_logo,setcompany_logo] = useState(location1.state.bio.company_logo);
+    const[founder_linked_in_profile,setfounder_linked_in_profile] = useState(location1.state.bio.founder_linked_in_profile);
+    const[company_name,setcompany_name] = useState(location1.state.bio.company_name);
+    const[company_linked_in_profile,setcompany_linked_in_profile] = useState(location1.state.bio.company_linked_in_profile);
+    const[website_url,setwebsite_url] = useState(location1.state.bio.website_url);
+    const[previous_funding,setprevious_funding] = useState(location1.state.bio.previous_funding);
+    const[product_description,setproduct_description] = useState(location1.state.bio.product_description);
+    const[traction_description,settraction_description] = useState(location1.state.bio.traction_description);
+    const[revenue,setrevenue] = useState(location1.state.bio.revenue);
+    const[reason_for_community_round,setreason_for_community_round] = useState(location1.state.bio.reason_for_community_round);
+    const[reason_for_mynt,setreason_for_mynt] = useState(location1.state.bio.reason_for_mynt);
+    const[existing_commitments,setexisting_commitments] = useState(location1.state.bio.existing_commitments);
+    const[country,setcountry] = useState(location1.state.bio.country);
+    const[state,setstate] = useState(location1.state.bio.state);
+    const[city,setcity] = useState(location1.state.bio.city);
+    const[pincode,setpincode] = useState(location1.state.bio.pincode);
+    const[company_address,setcompany_address] = useState(location1.state.bio.company_address);
+    const[facebook_link,setfacebook_link] = useState(location1.state.bio.facebook_link);
+    const[instagram_link,setinstagram_link] = useState(location1.state.bio.instagram_link);
+    const[legal_name,setlegal_name] = useState(location1.state.bio.legal_name);
+    const[cin,setcin] = useState(location1.state.bio.cin);
+    const[date_of_incorporation,setdate_of_incorporation] = useState(location1.state.bio.date_of_incorporation);
+    const[incorporation_type,setincorporation_type] = useState(location1.state.bio.incorporation_type);
+    const[sector,setsector] = useState(location1.state.bio.sector);
+    const[invested_so_far,setinvested_so_far] = useState(location1.state.bio.invested_so_far);
+    const[number_of_employees,setnumber_of_employees] = useState(location1.state.bio.number_of_employees);
   
    
-
-
-  
+    const updatestatus= (e) =>{
+      setstatus(e.target.value)
+    }
     const updatecompany_logo= (e) =>{
       setcompany_logo(e.target.value)
     }
@@ -124,18 +118,16 @@ const Company_Form = () =>{
     const updatenumber_of_employees = (e) =>{
       setnumber_of_employees(e.target.value)
     }
-
-
     const gotoAdd = async() => {
 
   
     
     
     
-      await axios.patch(`${Base_url}/api/company/manage`, {
+      await authAxios.patch(`${Base_url}/api/company/manage`, {
   
         
-        company_id: location.state.bio.id,
+        company_id: location1.state.bio.id,
   
        
        company_logo : company_logo,
@@ -164,42 +156,34 @@ const Company_Form = () =>{
     sector:sector,
     invested_so_far:invested_so_far,
     number_of_employees:+number_of_employees,
-    
-       
-       
-       
+    status : status,   
        },
-       {headers: {
-         Authorization: `Bearer ${token}`,
-       },}
        )
-  
-  
-  
-  
   navigator("/home/company")
-  
-  
   }
-
     return(
         <>
           <div className='container-fluid'>
         <div className='row'>
-          
-            <Dashboard />
-          
+            <Dashboard /> 
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"350px"}}>
-          <form style={{padding:"20px",borderRadius:"20px"}} onSubmit={e=> {
+          <div className='col-7' style={{marginTop:"170px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}}>
+          <form style={{padding:"40px",borderRadius:"20px"}} onSubmit={e=> {
             e.preventDefault();
             gotoAdd()
           }}>
-              <h1 style={{textAlign:"center",color:"blueviolet"}}>Update</h1>
+              <h1 style={{textAlign:"center",color:"#070A52"}}>Update Company Data</h1>
 
-
+              <label for="exampleInput" className="form-label">Status</label>
+              <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                <option selected  className="active">Select Option</option>
+                <option onClick={updatestatus}>ACTIVE</option>
+                <option onClick={updatestatus}>INACTIVE</option>       
+                </select>
+              </div>
               <label for="exampleInputRollnum" className="form-label">Company Logo</label>
               <input  type="link" className="form-control" id="exampleInputRollnum" value={company_logo} onChange={updatecompany_logo}/>
               
@@ -288,12 +272,10 @@ const Company_Form = () =>{
               <input  type="text" className="form-control" id="exampleInputBranch" value={number_of_employees} onChange={updatenumber_of_employees}/>
               
           
-            <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}}>Submit</button>
+            <button type="submit" className="btn btn-success" style={{marginTop:"30px"}}>Submit</button>
         </form>
         </div>
         </div>
-      
-    
         </>
     )
 }

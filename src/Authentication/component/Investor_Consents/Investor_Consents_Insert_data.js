@@ -1,30 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import Dashboard from '../../Dashboard/Dashboard';
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Base_url from "../Base_url";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
+import { authAxios } from "../../../Services/auth.service";
 
 
 const Investor_Consents_Insert_data = () =>{
-  const[id , setId] = useState();  
-  
+  const[user_id , setUser_id] = useState(); 
   const[risk,setRisk] = useState();
   const[limited , setLimited] = useState();
   const[diversification , setDiversification] = useState();
   const[cancel,setCancel] = useState();
   const[research,setResearch] = useState();
+  const[items , setItems] =useState([]); 
   
 
   
 
   const navigator = useNavigate();
 
-
-  const updateId = (e) =>{
-    setId(e.target.value)
-  }
   
   const updateRisk = (e) =>{
     setRisk(e.target.value)
@@ -41,36 +35,53 @@ const Investor_Consents_Insert_data = () =>{
   const updateResearch = (e) =>{
     setResearch(e.target.value)
   }
+  
+
+  const add =(x)=>{
+    console.log(x);
+    setUser_id(x);
+  }
+  
+  useEffect(()=>{
+    const getUploadedDocs = async () => {
+  
+      try {
+          const response = await authAxios.get(`${Base_url}/api/users/manage`);
+          // console.log(response.data)
+          setItems(response.data)
+          return response.data;
+      }
+      catch (error) {
+          if (error) {
+              console.log(error)
+          }
+          return error;
+      }
+}
+getUploadedDocs();
+  },[])
 
  
-  const gotoAdd = async() => {
-
-  
-    
-    
-    
-           await axios.post(`${Base_url}/api/investor-consent/manage`, {
+  const gotoAdd = async() => {  
+           await authAxios.post(`${Base_url}/api/investor-consent/manage`, {
 
             
-            user_id : id,
+            user_id : +user_id,
        
             
-            risk_consent : true,
+            risk_consent : risk.toLowerCase() === "true" ? true : false,
             
-            limited_transfer_consent : true,
+            limited_transfer_consent : limited.toLowerCase() === "true" ? true : false,
 
-            diversification_consent : true,
+            diversification_consent : diversification.toLowerCase() === "true" ? true : false,
 
-            cancellation_consent : true,
+            cancellation_consent : cancel.toLowerCase() === "true" ? true : false,
 
-            research_consent : true,
+            research_consent : research.toLowerCase() === "true" ? true : false,
             
             
             
             },
-            {headers: {
-              Authorization: `Bearer ${token}`,
-            },}
             )
     
    
@@ -91,36 +102,82 @@ const Investor_Consents_Insert_data = () =>{
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"280px"}}>
-          <form style={{padding:"20px"}} onSubmit={e=>{
+          <div className='col-7' style={{marginTop:"110px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}}>
+          <form style={{padding:"30px" , borderRadius:"20px"}} onSubmit={e=>{
             e.preventDefault()
             gotoAdd()
           }}>
-              <h1 style={{textAlign:"center",color:"blueviolet"}}>Add Data</h1>
-
-              <label for="exampleInputName" className="form-label">Id</label>
-              <input type="number" className="form-control" id="exampleInputName" value={id} onChange={updateId}/>
+              <h1 style={{textAlign:"center",color:"#070A52"}}>Add Investor Consents Data</h1>
 
               
 
-              <label for="exampleInputRollnum" className="form-label">Risk Consent</label>
-              <input  type="text" className="form-control" id="exampleInputRollnum" value={risk} onChange={updateRisk}/>
+              <label  className="form-label">User ID</label>
+              <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                <option selected  className="active">Select user id</option>
+                {
+                  items && items.map((item) =>{
+                    return (
+                      <option onClick={()=>{add(item.id)}} >{item.id}</option>
+                    )
+                  })
+                }
+                </select>
+              
+              </div>
+
+              
+
+              <label  className="form-label">Risk Consent</label>
+              <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                <option selected  className="active">Select Option</option>
+                <option onClick={updateRisk}>true</option>
+                <option onClick={updateRisk}>false</option>   
+                </select>
+              </div>
             
             
               <label for="exampleInputRegistrationnum" className="form-label">Limited Transfer Consent</label>
-              <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={limited} onChange={updateLimited}/>
+              <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                <option selected  className="active">Select Option</option>
+                <option onClick={updateLimited}>true</option>
+                <option onClick={updateLimited}>false</option>    
+                </select>
+              </div>
+              
+              <label for="exampleInputRegistrationnum" className="form-label">Diversification Transfer Consent</label>
+              <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                <option selected  className="active">Select Option</option>
+                <option onClick={updateDiversification}>true</option>
+                <option onClick={updateDiversification}>false</option>    
+                </select>
+              </div>
 
-              <label for="exampleInputRegistrationnum" className="form-label">Diversification Consent</label>
-              <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={diversification} onChange={updateDiversification}/>
               
               <label for="exampleInputRollnum" className="form-label">Cancellation Consent</label>
-              <input  type="text" className="form-control" id="exampleInputRollnum" value={cancel} onChange={updateCancel}/>
+              <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                <option selected  className="active">Select Option</option>
+                <option onClick={updateCancel}>true</option>
+                <option onClick={updateCancel}>false</option>    
+                </select>
+              </div>
+              
 
               <label for="exampleInputRollnum" className="form-label">Research Consent</label>
-              <input  type="text" className="form-control" id="exampleInputRollnum" value={research} onChange={updateResearch}/>
+              <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                <option selected  className="active">Select Option</option>
+                <option onClick={updateResearch}>true</option>
+                <option onClick={updateResearch}>false</option>    
+                </select>
+              </div>
             
           
-              <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}} >Submit</button>
+              <button type="submit" className="btn btn-success" style={{marginTop:"30px"}} >Submit</button>
           </form>
         </div>
         </div>

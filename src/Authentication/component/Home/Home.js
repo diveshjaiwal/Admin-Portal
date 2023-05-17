@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import CardHome from "./CardHome";
 import Data from "./Data";
@@ -12,13 +11,11 @@ const Home = () =>{
         <>     
             <div className='container-fluid'>
             <div className='row'>
-              
                 <Dashboard />
-              
             </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"350px"}}>
+          <div className='col-8' style={{marginTop:"150px", marginLeft:"350px"}}>
                     {
                         Data.map( (item, ind) => {
                             return (
@@ -32,9 +29,7 @@ const Home = () =>{
                         })
                     }
                 </div>
-            </div>
-             
-            
+            </div>    
         </>
     )
 }

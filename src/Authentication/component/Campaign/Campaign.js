@@ -3,12 +3,11 @@ import Dashboard from '../../Dashboard/Dashboard';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CreateIcon from '@mui/icons-material/Create';
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
 import Base_url from "../Base_url";
+import { authAxios } from '../../../Services/auth.service';
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
+
 function Campaign() {
-
   const navigator = useNavigate();
   const [items , setItems] = useState([]);
   function update (item){
@@ -17,15 +16,11 @@ function Campaign() {
 
   useEffect ( () => {
     const getUploadedDocs = async () => {
-  
       try {
-          const response = await axios.get(`${Base_url}/api/campaign/manage`,  {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          console.log(response.data)
+          const response = await authAxios.get(`${Base_url}/api/campaign/manage`);
+          // console.log(response.data)
           setItems(response.data)
+          console.log(response.data)
           return response.data;
       }
       catch (error) {
@@ -42,34 +37,27 @@ const goToAdd = () =>
 {
     navigator("/home/campaign/insert");
 }
-
-
   return (
     <>  
       <div className='container-fluid'>
         <div className='row'>
-          
-            <Dashboard />
-          
+            <Dashboard /> 
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"350px"}}>
+          <div className='col-8' style={{marginTop:"150px", marginLeft:"350px"}}>
           <button type="button" class="btn btn-secondary btn-lg" onClick={goToAdd}>Add Campaign</button>
-            <table class="table">
+            <table class="table table-dark table-striped">
                 <thead>
                   <tr>
-                    <th scope="col"><CheckBoxOutlineBlankIcon /></th>
-                    <th scope="col">id</th>
-                    <th scope="col">company_id</th>
-                    <th scope="col">status</th>
-                    <th scope="col">youtube_link</th>
-                    <th scope="col">ama_date</th>
-                    <th scope="col">ama_meet_link</th>
-                    <th scope="col">ama_youtube_video</th>
-                    <th scope="col">pitch</th>
-                    <th scope="col">created_at</th>
-                    <th scope="col">updated_at</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Company Id</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Youtube Link</th>
+                    <th scope="col">Ama Date</th>
+                    <th scope="col">Ama Meet Link</th>
+                    <th scope="col">Ama Youtube Video</th>
+                    <th scope="col">Pitch</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -79,7 +67,6 @@ const goToAdd = () =>
                       return (
                         <>
                           <tr>
-                              <td scope="col-2" ><CheckBoxOutlineBlankIcon /></td>
                               <td scope="col">{item.id}</td>
                               <td scope="col">{item.company_id}</td>
                               <td scope="col">{item.status}</td>
@@ -88,8 +75,6 @@ const goToAdd = () =>
                               <td scope="col">{item.ama_meet_link}</td>
                               <td scope="col">{item.ama_youtube_video}</td>
                               <td scope="col">{item.pitch}</td>
-                              <td scope="col">{item.created_at}</td>
-                              <td scope="col">{item.updated_at}</td>
                               <td scope="col-2" ><CreateIcon onClick={() => {update(item)}} /></td>
                           </tr>
                         </>
@@ -103,5 +88,4 @@ const goToAdd = () =>
     </>
   );
 }
-
 export default Campaign;

@@ -3,10 +3,8 @@ import Dashboard from '../../Dashboard/Dashboard';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CreateIcon from '@mui/icons-material/Create';
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
 import Base_url from "../Base_url";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
+import { authAxios } from '../../../Services/auth.service';
 
 function People() {
   const navigator = useNavigate();
@@ -14,16 +12,11 @@ function People() {
   function update (item){
    navigator(`/people/${item.id}`, {state : { bio : item}})
   }
-
   useEffect ( () => {
     const getUploadedDocs = async () => {
   
       try {
-          const response = await axios.get(`${Base_url}/api/people/manage`,  {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await authAxios.get(`${Base_url}/api/people/manage`);
           console.log(response.data)
           setItems(response.data)
           return response.data;
@@ -36,40 +29,34 @@ function People() {
       }
 }
 getUploadedDocs();
-})
+},[])
 
 const goToAdd =()=>{
   navigator("/home/people/insert");
 }
-
   return (
     <> 
       <div className='container-fluid'>
             <div className='row'>
-              
                 <Dashboard />
-              
             </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"300px"}}>
+          <div className='col-8' style={{marginTop:"150px", marginLeft:"350px"}}>
           <button type="button" class="btn btn-secondary btn-lg" onClick={goToAdd}>Add People</button>
-            <table class="table">
+            <table class="table table-dark table-striped">
                 <thead>
                   <tr>
-                    <th scope="col"><CheckBoxOutlineBlankIcon /></th>
-                    <th scope="col">id</th>
-                    <th scope="col">company_id</th>
-                    <th scope="col">type</th>
-                    <th scope="col">name</th>
-                    <th scope="col">position</th>
-                    <th scope="col">facebook_link</th>
-                    <th scope="col">instagram_link</th>
-                    <th scope="col">linked_in_link</th>
-                    <th scope="col">description</th>
-                    <th scope="col">profile_image</th>
-                    <th scope="col">created_at</th>
-                    <th scope="col">updated_at</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Company Id</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Position</th>
+                    <th scope="col">Facebook Link</th>
+                    <th scope="col">Instagram Link</th>
+                    <th scope="col">Linked In Link</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Profile Image</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -79,7 +66,6 @@ const goToAdd =()=>{
                       return (
                         <>
                           <tr>
-                          <td scope="col-2" ><CheckBoxOutlineBlankIcon /></td>
                           <td scope="col-2" >{item.id}</td>
                           <td scope="col-2" >{item.company_id}</td>
                           <td scope="col-2" >{item.type}</td>
@@ -90,8 +76,6 @@ const goToAdd =()=>{
                           <td scope="col-2" >{item.linked_in_link}</td>
                           <td scope="col-2" >{item.description}</td>
                           <td scope="col-2" >{item.profile_image}</td>
-                          <td scope="col-2" >{item.created_at}</td>
-                          <td scope="col-2" >{item.updated_at}</td>
                           <td scope="col-2" ><CreateIcon onClick={()=>{update(item)}} /></td>
                           </tr>
                         </>
@@ -100,7 +84,6 @@ const goToAdd =()=>{
                   }
                 </tbody>
               </table>
-          
         </div>
       </div>
     </>

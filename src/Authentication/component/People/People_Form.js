@@ -1,16 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dashboard from '../../Dashboard/Dashboard';
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from 'axios'
 import Base_url from "../Base_url";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
+import { authAxios } from "../../../Services/auth.service";
 
 const People_Form = () =>{
-
   const location1 = useLocation();
   const navigator = useNavigate();
-
   const[company_id , setCompany_id] = useState(location1.state.bio.company_id);
   const[type , setType] = useState(location1.state.bio.type);
   const[name , setName] = useState(location1.state.bio.name);
@@ -20,11 +16,9 @@ const People_Form = () =>{
   const[linked , setLinked] = useState(location1.state.bio.linked_in_link);
   const[description , setDescription] = useState(location1.state.bio.description);
   const[profile,setProfile] = useState(location1.state.bio.profile_image);
+  const[items, setItems] = useState();
 
-
-  const updateCompany_id = (e) =>{
-    setCompany_id(e.target.value)
-  }
+  
   const updateType = (e) =>{
     setType(e.target.value)
   }
@@ -50,13 +44,33 @@ const People_Form = () =>{
     setProfile(e.target.value)
   }
 
+  const add =(x)=>{
+    console.log(x);
+    setCompany_id(x);
+  }
+  
+  useEffect(()=>{
+    const getUploadedDocs = async () => {
+  
+      try {
+          const response = await authAxios.get(`${Base_url}/api/company/manage`);
+          console.log(response.data)
+          setItems(response.data)
+          return response.data;
+      }
+      catch (error) {
+          if (error) {
+              console.log(error)
+          }
+          return error;
+      }
+}
+getUploadedDocs();
+  },[])
 
   const gotoAdd = async() => {
     
-    const values = {
-
-            
-                  
+    const values = {           
        
       people_id : location1.state.bio.id,
        
@@ -70,45 +84,40 @@ const People_Form = () =>{
        linked_in_link : linked,
        description : description,
        profile_image:profile,
-
-       
-
-       
-       
-       
-       
        }
        
-      await axios.patch(`${Base_url}/api/people/manage`,values, 
-            {headers: {
-              Authorization: `Bearer ${token}`,
-            },}
-            )
-      
+      await authAxios.patch(`${Base_url}/api/people/manage`,values);
      navigator("/home/people")
     
     }
-
-
     return(
         <>
           <div className='container-fluid'>
         <div className='row'>
-          
             <Dashboard />
-          
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"280px"}} onSubmit={e => {
+          <div className='col-7' style={{marginTop:"130px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}} onSubmit={e => {
             e.preventDefault();
             gotoAdd()
           }}>
-          <form style={{padding:"20px"}}>
-              <h1 style={{textAlign:"center",color:"blueviolet"}}>Update</h1>
+          <form style={{padding:"40px" , borderRadius:"20px"}}>
+              <h1 style={{textAlign:"center",color:"#070A52",marginBottom:"20px"}}>Update People Data</h1>
 
               <label for="exampleInputName" className="form-label">Company Id</label>
-              <input type="text" className="form-control" id="exampleInputName" value={company_id} onChange={updateCompany_id}/>
+              <div class="input-group">
+                  <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                    <option selected  className="active">Select Company Name</option>
+                    {
+                      items && items.map((item) =>{
+                        return (
+                          <option onClick={()=>{add(item.user_id)}} >{item.company_name}</option>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
             
             
               <label for="exampleInputRollnum" className="form-label">Type</label>
@@ -142,11 +151,10 @@ const People_Form = () =>{
               <label for="exampleInputBranch" className="form-label">Profile Image</label>
               <input  type="text" className="form-control" id="exampleInputBranch" value={profile} onChange={updateProfile}/>
             
-            <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}}>Submit</button>
+            <button type="submit" className="btn btn-success" style={{marginTop:"30px"}}>Submit</button>
           </form>
         </div>
         </div>
-     
     </>
     )
 }

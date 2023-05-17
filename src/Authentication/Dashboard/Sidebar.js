@@ -9,17 +9,18 @@ import * as FcIcons from 'react-icons/fc';
 
 export const SidebarData = [
   {
-    title: 'Home',
+    title: 'Dahboard',
     path: '/home',
     icon: <AiIcons.AiFillHome />,
-    cName: 'nav-text', 
-    
+    cName: 'nav-text',  
   },
   {
     title: 'Campaign',
     path: '/home/campaign',
     icon: <AiIcons.AiFillHome />,
-    cName: 'nav-text', 
+    cName: 'nav-text',
+    path1 : '/home/campaign/insert',
+
     
   },
   {
@@ -27,12 +28,14 @@ export const SidebarData = [
     path: '/home/company',
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text', 
+    path1 : '/home/company/insert',
   },
   {
     title: 'Deal Terms',
     path: '/home/deal_term',
     icon: <FaIcons.FaCartPlus />,
-    cName: 'nav-text', 
+    cName: 'nav-text',
+    path1 : '/home/deal_term/insert', 
     
   },
   {
@@ -40,6 +43,15 @@ export const SidebarData = [
     path: '/home/deal_type',
     icon: <IoIcons.IoMdPeople />,
     cName: 'nav-text', 
+    path1 : '/home/deal_type/insert',
+
+      },
+  {
+    title: 'Documents',
+    path: '/home/documents',
+    icon: <IoIcons.IoMdPeople />,
+    cName: 'nav-text', 
+    path1 : '/home/documents/insert',
     
   },
   {
@@ -47,6 +59,7 @@ export const SidebarData = [
     path: '/home/faqs',
     icon: <FaIcons.FaEnvelopeOpenText />,
     cName: 'nav-text', 
+    path1 : '/home/faqs/insert',
     
   },
   {
@@ -54,6 +67,7 @@ export const SidebarData = [
     path: '/home/highlights',
     icon: <IoIcons.IoMdHelpCircle />,
     cName: 'nav-text', 
+    path1 : '/home/highlights/insert',
     
   },
   {
@@ -61,6 +75,7 @@ export const SidebarData = [
     path: '/home/investor_kyc',
     icon: <AiIcons.AiFillMoneyCollect/>,
     cName: 'nav-text', 
+    path1 : '/home/investor_kyc/insert',
     
   },
   {
@@ -68,6 +83,7 @@ export const SidebarData = [
     path: '/home/investor_consents',
     icon: <FcIcons.FcMoneyTransfer />,
     cName: 'nav-text', 
+    path1 : '/home/investor_consents/insert',
     
   },
   {
@@ -75,6 +91,7 @@ export const SidebarData = [
     path: '/home/user',
     icon: <FiIcons.FiUsers />,
     cName: 'nav-text', 
+    path1 : '/home/user/insert',
     
   },
   {
@@ -82,13 +99,15 @@ export const SidebarData = [
     path: '/home/people',
     icon: <BsIcons.BsPeopleFill />,
     cName: 'nav-text', 
+    path1 : '/home/people/insert',
     
   },
   {
     title: 'Press',
     path: '/home/press',
     icon: <FaIcons.FaWpressr />,
-    cName: 'nav-text', 
+    cName: 'nav-text',
+    path1 : '/home/press/insert', 
     
   },
   {
@@ -96,6 +115,15 @@ export const SidebarData = [
     path: '/home/rewards',
     icon: <GiIcons.GiWantedReward/>,
     cName: 'nav-text', 
+    path1 : '/home/rewards/insert',
+    
+  },
+  {
+    title: 'Payments',
+    path: '/home/payments',
+    icon: <AiIcons.AiFillMoneyCollect/>,
+    cName: 'nav-text', 
+    path1 : '/home/payments/insert',
     
   }
 ];

@@ -1,14 +1,9 @@
 import React, { useState } from "react";
 import Dashboard from '../../Dashboard/Dashboard';
-import axios from "axios";
 import Base_url from "../Base_url";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
-
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
-
+import { authAxios } from "../../../Services/auth.service";
 
 
 const Investor_Consent_Form = () =>{
@@ -47,28 +42,25 @@ const Investor_Consent_Form = () =>{
     
     
     
-    await axios.post(`${Base_url}/api/investor-consent/manage`, {
+    await authAxios.patch(`${Base_url}/api/investor-consent/manage`, {
 
       
      user_id : location1.state.bio.user_id,
 
      
-     risk_consent : false,
+     risk_consent : risk_consent.toLowerCase() === "true" ? true : false,
      
-     limited_transfer_consent : false,
+     limited_transfer_consent :limited_transfer_consent.toLowerCase() === "true" ? true : false,
 
-     diversification_consent : false,
+     diversification_consent :diversification_consent.toLowerCase() === "true" ? true : false,
 
-     cancellation_consent : true,
+     cancellation_consent : cancellation_consent.toLowerCase() === "true" ? true : false,
 
-     research_consent : true,
+     research_consent : research_consent.toLowerCase() === "true" ? true : false,
      
      
      
      },
-     {headers: {
-       Authorization: `Bearer ${token}`,
-     },}
      )
 
 
@@ -90,34 +82,64 @@ navigator("/home/investor_consents")
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"280px"}}>
-          <form style={{padding:"20px"}} onSubmit={e=>{
+          <div className='col-7' style={{marginTop:"130px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}}>
+          <form style={{padding:"40px", borderRadius:"20px"}} onSubmit={e=>{
             e.preventDefault()
             gotoAdd()
           }}>
-                <h1 style={{textAlign:"center",color:"blueviolet"}}>Update</h1>
+                <h1 style={{textAlign:"center",color:"#070A52"}}>Update Investor Consents</h1>
 
       
-                <label for="exampleInputName" className="form-label">Risk Consent</label>
-                <input type="text" className="form-control" id="exampleInputName" value={risk_consent} onChange={updaterisk_consent}/>
-              
+              <label for="exampleInputName" className="form-label">Risk Consent</label>
+              <div class="input-group">
+                <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                <option selected  className="active">Select Option</option>
+                <option onClick={updaterisk_consent}>true</option>
+                <option onClick={updaterisk_consent}>false</option>   
+                </select>
+              </div>              
               
                 <label for="exampleInputRollnum" className="form-label">Limited Transfer Consent</label>
-                <input  type="text" className="form-control" id="exampleInputRollnum" value={limited_transfer_consent} onChange={updatelimited_transfer_consent}/>
+                <div class="input-group">
+                  <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                  <option selected  className="active">Select Option</option>
+                  <option onClick={updatelimited_transfer_consent}>true</option>
+                  <option onClick={updatelimited_transfer_consent}>false</option>   
+                  </select>
+                </div>              
               
               
-                <label for="exampleInputRegistrationnum" className="form-label">diversification consent</label>
-                <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={diversification_consent} onChange={updatediversification_consent}/>
+              
+                <label for="exampleInputRegistrationnum" className="form-label">Diversification consent</label>
+                <div class="input-group">
+                <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                  <option selected  className="active">Select Option</option>
+                  <option onClick={updatediversification_consent}>true</option>
+                  <option onClick={updatediversification_consent}>false</option>   
+                </select>
+                </div>              
               
               
-                <label for="exampleInputBranch" className="form-label">cancellation_consent</label>
-                <input  type="text" className="form-control" id="exampleInputBranch" value={cancellation_consent} onChange={updatecancellation_consent}/>
+                <label for="exampleInputBranch" className="form-label">Cancellation consent</label>
+                <div class="input-group">
+                <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                  <option selected  className="active">Select Option</option>
+                  <option onClick={updatecancellation_consent}>true</option>
+                  <option onClick={updatecancellation_consent}>false</option>   
+                </select>
+                </div>  
               
               
-                <label for="exampleInputpassword" className="form-label">research_consent</label>
-                <input  type="text" className="form-control" id="exampleInputPassword1" value={research_consent} onChange={updateresearch_consent}/>
+                <label for="exampleInputpassword" className="form-label">Research consent</label>
+                <div class="input-group">
+                <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                  <option selected  className="active">Select Option</option>
+                  <option onClick={updateresearch_consent}>true</option>
+                  <option onClick={updateresearch_consent}>false</option>   
+                </select>
+                </div>  
             
-              <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}}>Submit</button>
+              <button type="submit" className="btn btn-success" style={{marginTop:"30px"}}>Submit</button>
           </form>
         </div>
         </div>

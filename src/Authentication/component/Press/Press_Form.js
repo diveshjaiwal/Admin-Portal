@@ -1,13 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dashboard from '../../Dashboard/Dashboard';
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from 'axios'
 import Base_url from "../Base_url";
-
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
-
-
+import { authAxios } from "../../../Services/auth.service";
 
 const Press_Form = () =>{
   const location1 = useLocation();
@@ -17,9 +12,8 @@ const Press_Form = () =>{
   const[description,setDescription] = useState(location1.state.bio.description);
   const[banner,setBanner] = useState(location1.state.bio.banner);
   const[company_id,setcompany_id] = useState(location1.state.bio.company_id);
+  const [items , setItems] = useState()
  
-
-  
   const updateTitle = (e) =>{
     setTitle(e.target.value)
   }
@@ -32,38 +26,44 @@ const Press_Form = () =>{
   const updateBanner = (e) =>{
     setBanner(e.target.value)
   }
-  const updatecompany_id = (e) =>{
-    setcompany_id(e.target.value)
+  
+
+  const add =(x)=>{
+    console.log(x);
+    setcompany_id(x);
   }
+
+  useEffect(()=>{
+    const getUploadedDocs = async () => {
+  
+      try {
+          const response = await authAxios.get(`${Base_url}/api/company/manage`);
+          console.log(response.data)
+          setItems(response.data)
+          return response.data;
+      }
+      catch (error) {
+          if (error) {
+              console.log(error)
+          }
+          return error;
+      }
+}
+getUploadedDocs();
+  },[])
   
   const gotoAdd = async() => {
     
     const values = {
-
-            
-                  
-       
       press_id : location1.state.bio.id,
-       
-       
        title : title,
        link : link,
        description : description,
        banner : banner,
-
-       company_id : company_id
-
-       
-       
-       
-       
+       company_id : +company_id
        }
        
-      await axios.patch(`${Base_url}/api/press/manage`,values, 
-            {headers: {
-              Authorization: `Bearer ${token}`,
-            },}
-            )
+      await authAxios.patch(`${Base_url}/api/press/manage`,values);
       
      navigator("/home/press")
     
@@ -73,21 +73,30 @@ const Press_Form = () =>{
         <>
           <div className='container-fluid'>
         <div className='row'>
-          
             <Dashboard />
-          
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"280px"}}>
-          <form style={{padding:"20px"}} onSubmit={e => {
+          <div className='col-7' style={{marginTop:"120px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}}>
+          <form style={{padding:"40px",borderRadius:"20px" , marginBottom:"20px"}} onSubmit={e => {
             e.preventDefault();
             gotoAdd()
           }}>
-                <h1 style={{textAlign:"center",color:"blueviolet"}}>Update Data</h1>
+                <h1 style={{textAlign:"center",color:"#070A52"}}>Update Press Data</h1>
 
-                <label for="exampleInputName" className="form-label">Company id</label>
-                <input type="number" className="form-control" id="exampleInputName" value={company_id} onChange={updatecompany_id}/>
+                <label for="exampleInputName" className="form-label">Company Id</label>
+                <div class="input-group">
+                  <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                    <option selected  className="active">Select Company Name</option>
+                    {
+                      items && items.map((item) =>{
+                        return (
+                          <option onClick={()=>{add(item.user_id)}} >{item.company_name}</option>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
 
                 <label for="exampleInputRollnum" className="form-label">Title</label>
                 <input  type="text" className="form-control" id="exampleInputRollnum" value={title} onChange={updateTitle}/>
@@ -103,13 +112,10 @@ const Press_Form = () =>{
                 <label for="exampleInputBranch" className="form-label">Banner</label>
                 <input  type="text" className="form-control" id="exampleInputBranch" value={banner} onChange={updateBanner}/>
 
-                
-              
-              <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}}>Submit</button>
+              <button type="submit" className="btn btn-success" style={{marginTop:"30px"}}>Submit</button>
           </form>
         </div>
         </div>
-     
     </>
     )
 }

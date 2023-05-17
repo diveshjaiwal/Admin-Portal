@@ -3,11 +3,8 @@ import Dashboard from '../../Dashboard/Dashboard';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CreateIcon from '@mui/icons-material/Create';
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
 import Base_url from "../Base_url";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
-
+import { authAxios } from '../../../Services/auth.service';
 
 
 function Press() {
@@ -21,11 +18,7 @@ function Press() {
     const getUploadedDocs = async () => {
   
       try {
-          const response = await axios.get(`${Base_url}/api/press/manage`,  {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await authAxios.get(`${Base_url}/api/press/manage`);
           console.log(response.data)
           setItems(response.data)
           return response.data;
@@ -38,36 +31,30 @@ function Press() {
       }
 }
 getUploadedDocs();
-})
+},[])
 
 const goToAdd =()=>{
   navigator("/home/press/insert");
 }
-
   return (
     <> 
       <div className='container-fluid'>
             <div className='row'>
-              
                 <Dashboard />
-              
             </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"300px"}}>
+          <div className='col-8' style={{marginTop:"150px", marginLeft:"350px"}}>
           <button type="button" class="btn btn-secondary btn-lg" onClick={goToAdd}>Add Press</button>
-            <table class="table">
+            <table class="table table-dark table-striped">
                 <thead>
                   <tr>
-                    <th scope="col"><CheckBoxOutlineBlankIcon /></th>
-                    <th scope="col">id</th>
-                    <th scope="col">company_id</th>
-                    <th scope="col">title</th>
-                    <th scope="col">link</th>
-                    <th scope="col">description</th>
-                    <th scope="col">banner</th>
-                    <th scope="col">created_at</th>
-                    <th scope="col">updated_at</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">Company Id</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Link</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Banner</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -77,15 +64,12 @@ const goToAdd =()=>{
                       return (
                         <>
                           <tr>
-                          <td scope="col-2" ><CheckBoxOutlineBlankIcon /></td>
                           <td scope="col-2" >{item.id}</td>
                           <td scope="col-2" >{item.company_id}</td>
                           <td scope="col-2" >{item.title}</td>
                           <td scope="col-2" >{item.link}</td>
                           <td scope="col-2" >{item.description}</td>
                           <td scope="col-2" >{item.banner} </td>
-                          <td scope="col-2" >{item.created_at}</td>
-                          <td scope="col-2" >{item.updated_at}</td>
                           <td scope="col-2" ><CreateIcon onClick={()=>{update(item)}} /></td>
                           </tr>
                         </>

@@ -1,30 +1,18 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import Dashboard from '../../Dashboard/Dashboard';
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Base_url from "../Base_url";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
+import { authAxios } from "../../../Services/auth.service";
 
 const Rewards_Insert_data = () =>{
-  const[id , setId] = useState();  
   const[campaign_id , setCampaignid] = useState();
   const[amount, setAmount] = useState();
   const[product , setProduct] = useState();
   const[discount , setDiscount] = useState();
-  
-  
-  
+  const[items , setItems] =useState([]);  
+  const[items2 , setItems2] =useState([]); 
 
   const navigator = useNavigate();
-
-
-  const updateId = (e) =>{
-    setId(e.target.value)
-  }
-  const updateCampaign = (e) =>{
-    setCampaignid(e.target.value)
-  }
   const updateAmount = (e) =>{
     setAmount(e.target.value)
   }
@@ -34,20 +22,58 @@ const Rewards_Insert_data = () =>{
   const updateDiscount = (e) =>{
     setDiscount(e.target.value)
   }
+  const updateItems = (e) =>{
+    setItems(e.target.value)
+  }
+
+  const add =(x)=>{
+    console.log(x);
+    setCampaignid(x);
+  }
   
+  useEffect(()=>{
+    const getUploadedDocs = async () => {
+  
+      try {
+          const response = await authAxios.get(`${Base_url}/api/company/manage`);
+          console.log(response.data)
+          setItems(response.data)
+          return response.data;
+      }
+      catch (error) {
+          if (error) {
+              console.log(error)
+          }
+          return error;
+      }
+}
+getUploadedDocs();
+const getUploaded = async () => {
+  
+  try {
+      const response = await authAxios.get(`${Base_url}/api/campaign/manage`);
+      console.log(response.data)
+      setItems2(response.data)
+      return response.data;
+  }
+  catch (error) {
+      if (error) {
+          console.log(error)
+      }
+      return error;
+  }
+}
+getUploaded();
+  },[])
 
   const gotoAdd = async(e) => {
 
     e.preventDefault();
     
-    if(id && campaign_id && amount && product && discount  )
-    
-    {
-    
-           await axios.post(`${Base_url}/api/rewards/manage`, {
+           await authAxios.post(`${Base_url}/api/rewards/manage`, {
 
             
-            id : id,
+            // id : id,
             
             campaign_id : campaign_id,
             
@@ -56,51 +82,38 @@ const Rewards_Insert_data = () =>{
             product_name : product,
 
             discounted_price : discount,
-            
-            
-            
+             
             },
-            {headers: {
-              Authorization: `Bearer ${token}`,
-            },}
             )
-    
-    
-    
     
     navigator("/home/rewards")
     
     }
-    
-    else
-    
-    {
-    
-    alert("Please fill all the section")
-    
-    }
-    
-    }
-
     return(
       <>
        <div className='container-fluid'>
         <div className='row'>
-          
             <Dashboard />
-          
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"280px"}}>
-          <form style={{padding:"20px"}}>
-              <h1 style={{textAlign:"center",color:"blueviolet"}}>Add Data</h1>
-
-              <label for="exampleInputName" className="form-label">Id</label>
-              <input type="number" className="form-control" id="exampleInputName" value={id} onChange={updateId}/>
-
-              <label for="exampleInputName" className="form-label">Campaign id </label>
-              <input type="number" className="form-control" id="exampleInputName" value={campaign_id} onChange={updateCampaign}/>
+          <div className='col-7' style={{marginTop:"130px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}}>
+          <form style={{padding:"50px",borderRadius:"20px"}}>
+              <h1 style={{textAlign:"center",color:"#070A52",marginBottom:"20px"}}>Add Reward Data</h1>
+               
+               <label for="exampleInputName" className="form-label">Campaign Id</label>
+              <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                <option selected  className="active">Select campaign id</option>
+                {
+                  items2 && items2.map((item) =>{
+                    return (
+                      <option onClick={()=>{add(item.id)}} >{item.id}</option>
+                    )
+                  })
+                }
+                </select>
+              </div>
 
               <label for="exampleInputRollnum" className="form-label">Amount</label>
               <input  type="number" className="form-control" id="exampleInputRollnum" value={amount} onChange={updateAmount}/>
@@ -111,16 +124,11 @@ const Rewards_Insert_data = () =>{
 
               <label for="exampleInputRegistrationnum" className="form-label">Discounted Price</label>
               <input  type="number" className="form-control" id="exampleInputeRegistrationnum" value={discount} onChange={updateDiscount}/>
-            
-            
-              
           
-              <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}} onClick={gotoAdd}>Submit</button>
+              <button type="submit" className="btn btn-success" style={{marginTop:"30px"}} onClick={gotoAdd}>Submit</button>
           </form>
         </div>
         </div>
-      
-
   </>
     )
 }

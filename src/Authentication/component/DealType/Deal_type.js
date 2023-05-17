@@ -6,10 +6,7 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CreateIcon from '@mui/icons-material/Create';
 import { useNavigate } from 'react-router-dom';
 import Base_url from '../Base_url';
-import axios from "axios";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
-
+import { authAxios } from '../../../Services/auth.service';
 
 function Deal_type() {
   const navigator = useNavigate();
@@ -22,11 +19,7 @@ function Deal_type() {
     const getUploadedDocs = async () => {
   
       try {
-          const response = await axios.get(`${Base_url}/api/deal_type/manage`,  {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          const response = await authAxios.get(`${Base_url}/api/deal_type/manage`);
           console.log(response.data)
           setItems(response.data)
           return response.data;
@@ -39,12 +32,10 @@ function Deal_type() {
       }
 }
 getUploadedDocs();
-})
-
+},[])
 const goToAdd = () =>{
   navigator("/home/deal_type/insert")
 }
-
   return (
     <>   
       <div className='container-fluid'>
@@ -55,16 +46,13 @@ const goToAdd = () =>{
             </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"300px"}}>
-          <button type="button" class="btn btn-secondary btn-lg" onClick={goToAdd}>Add Deal_Type</button>
-            <table class="table">
+          <div className='col-8' style={{marginTop:"150px", marginLeft:"350px"}}>
+          <button type="button" class="btn btn-secondary btn-lg" onClick={goToAdd}>Add Deal Type</button>
+            <table class="table table-dark table-striped">
                 <thead>
                   <tr>
-                    <th scope="col"><CheckBoxOutlineBlankIcon /></th>
                     <th scope="col">Id</th>
                     <th scope="col">Deal Name</th>
-                    <th scope="col">Created At</th>
-                    <th scope="col">Updated At</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
@@ -74,11 +62,8 @@ const goToAdd = () =>{
                       return (
                         <>
                           <tr>
-                          <td scope="col-2" ><CheckBoxOutlineBlankIcon /></td>
                           <td scope="col-2" >{item.id}</td>
                           <td scope="col-2" >{item.deal_name}</td>
-                          <td scope="col-2" >{item.created_at}</td>
-                          <td scope="col-2" >{item.updated_at}</td>
                           <td scope="col-2" ><CreateIcon onClick={() => {update(item)}} /></td>
                           </tr>
                         </>

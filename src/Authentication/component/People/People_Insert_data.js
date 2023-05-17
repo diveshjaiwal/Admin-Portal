@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import Dashboard from '../../Dashboard/Dashboard';
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Base_url from "../Base_url";
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
-
+import { authAxios } from "../../../Services/auth.service";
 
 const People_Insert_data = () =>{
   const[id , setId] =useState();  
@@ -18,6 +15,7 @@ const People_Insert_data = () =>{
   const[linked , setLinked] = useState();
   const[description , setDescription] = useState();
   const[profile,setProfile] = useState();
+  const[items , setItems] =useState();
   const [post, setPost] = React.useState(null);
 
   const navigator = useNavigate();
@@ -53,15 +51,37 @@ const People_Insert_data = () =>{
     setProfile(e.target.value)
   }
 
+
+  const add =(x)=>{
+    console.log(x);
+    setCompany_id(x);
+  }
+  
+  useEffect(()=>{
+    const getUploadedDocs = async () => {
+  
+      try {
+          const response = await authAxios.get(`${Base_url}/api/company/manage`);
+          console.log(response.data)
+          setItems(response.data)
+          return response.data;
+      }
+      catch (error) {
+          if (error) {
+              console.log(error)
+          }
+          return error;
+      }
+}
+getUploadedDocs();
+  },[])
+
+
   const gotoAdd = async(e) => {
 
     e.preventDefault();
     
-    if(id && company_id && type && name && position && facebook && insta && linked && description && profile   )
-    
-    {
-    
-           await axios.post(`${Base_url}/api/people/manage`, {
+           await authAxios.post(`${Base_url}/api/people/manage`, {
 
             
             id : id,
@@ -86,9 +106,6 @@ const People_Insert_data = () =>{
 
             
             },
-            {headers: {
-              Authorization: `Bearer ${token}`,
-            },}
             )
     
     .then(( response) => {
@@ -101,15 +118,7 @@ const People_Insert_data = () =>{
     
     navigator("/home/people")
     
-    }
     
-    else
-    
-    {
-    
-    alert("Please fill all the section")
-    
-    }
     
     }
 
@@ -123,17 +132,23 @@ const People_Insert_data = () =>{
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"280px"}}>
-          <form style={{padding:"20px"}}>
-              <h1 style={{textAlign:"center",color:"blueviolet"}}>Add Data</h1>
+          <div className='col-7' style={{marginTop:"120px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}}>
+          <form style={{padding:"40px" , borderRadius:"20px"}}>
+              <h1 style={{textAlign:"center",color:"#070A52", marginBottom:"20px"}}>Add People Data</h1>
 
-              <label for="exampleInputName" className="form-label">Id</label>
-              <input type="text" className="form-control" id="exampleInputName" value={id} onChange={updateId}/>
+               <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                <option selected  className="active">Select Company Name</option>
+                {
+                  items && items.map((item) =>{
+                    return (
+                      <option onClick={()=>{add(item.user_id)}} >{item.company_name}</option>
+                    )
+                  })
+                }
+              </select>
+            </div>
 
-              <label for="exampleInputName" className="form-label">Company Id</label>
-              <input type="text" className="form-control" id="exampleInputName" value={company_id} onChange={updateCompany_id}/>
-            
-            
               <label for="exampleInputRollnum" className="form-label">Type</label>
               <input  type="text" className="form-control" id="exampleInputRollnum" value={type} onChange={updateType}/>
             
@@ -165,11 +180,10 @@ const People_Insert_data = () =>{
               <label for="exampleInputBranch" className="form-label">Profile Image</label>
               <input  type="link" className="form-control" id="exampleInputBranch" value={profile} onChange={updateProfile}/>
             
-            <button type="submit" className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}} onClick={gotoAdd}>Submit</button>
+            <button type="submit" className="btn btn-success" style={{marginTop:"30px"}} onClick={gotoAdd}>Submit</button>
           </form>
         </div>
         </div>
-     
     </>
     )
 }

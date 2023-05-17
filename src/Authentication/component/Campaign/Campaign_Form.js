@@ -1,35 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dashboard from '../../Dashboard/Dashboard';
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from 'axios'
 import Base_url from "../Base_url";
+import { authAxios } from "../../../Services/auth.service";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNjY5OTgwLCJpYXQiOjE2ODA1ODM1ODAsImp0aSI6ImEzYzA5NmQ3YmEwYzQ0NjNhZjA3ZmNlZGRjNDZkOWE5IiwidXNlcl9pZCI6MTA0fQ.s3BH8aFjhKDBmnbQKaxDuQeEx3olPaAuJ0tCgt-oMJQ"
 
 
-const Campaign_Form = () =>{
+const Campaign_Form = () =>{  
   const location1 = useLocation();
-  
-  
-  
+  const [comp_id, setComp_id] = useState()
   const[youtube_link , setYoutube_link] = useState(location1.state.bio.youtube_link);
   const[ama_date,setAma_date] = useState(location1.state.bio.ama_date);
   const[ama_meet,setAma_meet] = useState(location1.state.bio.ama_meet);
   const[ama_youtube,setAma_youtube] = useState(location1.state.bio.ama_youtube);
   const[pitch,setPitch] = useState(location1.state.bio.pitch);
-  
-  
+  const[status,setStatus] = useState(location1.state.bio.status);
+  const[items, setItems] = useState();
 
   const navigator = useNavigate();
-  
 
-
-
-
-
-  
- 
-  
   const updateYoutube = (e) =>{
     setYoutube_link(e.target.value)
   }
@@ -45,20 +34,42 @@ const Campaign_Form = () =>{
   const updatePitch = (e) =>{
     setPitch(e.target.value)
   }
+  const updateStatus = (e) =>{
+    console.log(e.target.value);
+    setStatus(e.target.value)
+  }
+
+  const add =(x)=>{
+    console.log(x);
+    setComp_id(x);
+  }
   
+  useEffect(()=>{
+    const getUploadedDocs = async () => {
+  
+      try {
+          const response = await authAxios.get(`${Base_url}/api/company/manage`);
+          console.log(response.data)
+          setItems(response.data)
+          return response.data;
+      }
+      catch (error) {
+          if (error) {
+              console.log(error)
+          }
+          return error;
+      }
+}
+getUploadedDocs();
+  },[])
 
   const gotoAdd = async() => {
     
-    const values = {
-
-            
-                  
-       
+    const values = { 
        
        campaign_id : location1.state.bio.id, 
-       
-       
 
+       company_id : comp_id,
        
        youtube_link : youtube_link,
        
@@ -69,42 +80,44 @@ const Campaign_Form = () =>{
        ama_youtube_video : ama_youtube,
        
        pitch : pitch,
-       
-       
+       status : status,
        }
        console.log(values)
-      await axios.patch(`${Base_url}/api/campaign/manage`,values, 
-            {headers: {
-              Authorization: `Bearer ${token}`,
-            },}
-            )
+      await authAxios.patch(`${Base_url}/api/campaign/manage`,values);
       console.log("successful")
      navigator("/home/campaign")
     
     }
-    
-     
-
     return(
         <>
           <div className='container-fluid'>
         <div className='row'>
-          
             <Dashboard />
-          
         </div>
         </div>
         <div className='row'>
-          <div className='col-10' style={{marginTop:"150px", marginLeft:"350px"}}>
-          <form style={{padding:"20px",borderRadius:"20px"}} onSubmit={e =>{
+          <div className='col-7' style={{marginTop:"120px", marginLeft:"450px", borderRadius:"20px", backgroundColor:"#BACDDB"}}>
+          <form style={{padding:"40px",borderRadius:"20px"}} onSubmit={e =>{
             e.preventDefault();
             gotoAdd()}
           }>
-              <h1 style={{textAlign:"center",color:"blueviolet"}}>Update Data</h1>
+              <h1 style={{textAlign:"center",color:"#070A52",marginBottom:"20px"}}>Update Campaign Data</h1>
 
-              
+              <label for="exampleInputName" className="form-label">Company Id</label>
+              <div class="input-group">
+                  <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                    <option selected  className="active">Select Company Name</option>
+                    {
+                      items && items.map((item) =>{
+                        return (
+                          <option onClick={()=>{add(item.user_id)}} >{item.company_name}</option>
+                        )
+                      })
+                    }
+                  </select>
+                </div>
             
-            
+
               <label for="exampleInput" className="form-label">Youtube Link</label>
               <input   type="link" className="form-control" id="exampleInputeRegistrationnum" value={youtube_link} onChange={updateYoutube}/>
 
@@ -120,19 +133,24 @@ const Campaign_Form = () =>{
               <label for="exampleInputRegistrationnum" className="form-label">Pitch</label>
               <input   type="text" className="form-control" id="exampleInputeRegistrationnum" value={pitch} onChange={updatePitch}/>
 
-              
-          
-            <button type="submit"  className="btn btn-primary" style={{marginLeft:"500px",marginTop:"30px"}} >Submit</button>
+              <label for="exampleInput" className="form-label">Status</label>
+              <div class="input-group">
+              <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon" >
+                <option selected  className="active">Select Option</option>
+                <option onClick={updateStatus}>CREATED</option>
+                <option onClick={updateStatus}>UNDER REVIEW</option> 
+                <option onClick={updateStatus}>CHANGES REQUESTED</option> 
+                <option onClick={updateStatus}>APPROVED</option>   
+                <option onClick={updateStatus}>LIVE</option>   
+                <option onClick={updateStatus}>COMPLETED</option>
+                <option onClick={updateStatus}>REFUNDED</option>  
+                <option onClick={updateStatus}>CLOSED</option>       
+                </select>
+              </div>
+            <button type="submit"  className="btn btn-success" style={{marginTop:"30px"}} >Submit</button>
         </form>
         </div>
         </div>
-     
-    
-
-
-
-
-
         </>
     )
 }
