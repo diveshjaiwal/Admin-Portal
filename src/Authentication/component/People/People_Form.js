@@ -94,7 +94,10 @@ getUploadedDocs();
         <>
           <div className='container-fluid'>
         <div className='row'>
-            <Dashboard />
+            <Dashboard 
+            f1 = {true}
+            f2 = {false}
+            />
         </div>
         </div>
         <div className='row'>
@@ -106,7 +109,7 @@ getUploadedDocs();
               <h1 style={{textAlign:"center",color:"#070A52",marginBottom:"20px"}}>Update People Data</h1>
 
               <label for="exampleInputName" className="form-label">Company Id</label>
-              <div class="input-group">
+              <div className="input-group">
                   <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
                     <option selected  className="active">Select Company Name</option>
                     {

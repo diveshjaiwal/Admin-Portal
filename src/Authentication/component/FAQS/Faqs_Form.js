@@ -68,7 +68,10 @@ getUploaded();
       <>
        <div className='container-fluid'>
         <div className='row'>
-            <Dashboard />
+            <Dashboard 
+            f1 = {true}
+            f2 = {false}
+            />
         </div>
         </div>
         <div className='row'>

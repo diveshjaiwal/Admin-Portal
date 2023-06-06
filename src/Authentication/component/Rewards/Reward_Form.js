@@ -28,7 +28,7 @@ const Reward_Form = () =>{
     const getUploaded = async () => {  
       try {
           const response = await authAxios.get(`${Base_url}/api/campaign/manage`);
-          console.log(response.data)
+          // console.log(response.data)
           setItems2(response.data)
           return response.data;
       }
@@ -65,7 +65,10 @@ const Reward_Form = () =>{
       <>
        <div className='container-fluid'>
         <div className='row'>
-            <Dashboard />
+            <Dashboard 
+            f1 = {true}
+            f2 = {false}
+            />
         </div>
         </div>
         <div className='row'>

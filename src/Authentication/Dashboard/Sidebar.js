@@ -6,18 +6,27 @@ import * as FiIcons from 'react-icons/fi';
 import * as BsIcons from 'react-icons/bs';
 import * as GiIcons from 'react-icons/gi';
 import * as FcIcons from 'react-icons/fc';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import CampaignIcon from '@mui/icons-material/Campaign';
+import BusinessIcon from '@mui/icons-material/Business';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import QuizIcon from '@mui/icons-material/Quiz';
+import HighlightIcon from '@mui/icons-material/Highlight';
+import InterpreterModeIcon from '@mui/icons-material/InterpreterMode';
+import StarRateIcon from '@mui/icons-material/StarRate';
+import PaymentsIcon from '@mui/icons-material/Payments';
 
 export const SidebarData = [
   {
     title: 'Dahboard',
     path: '/home',
-    icon: <AiIcons.AiFillHome />,
+    icon: <DashboardIcon />,
     cName: 'nav-text',  
   },
   {
     title: 'Campaign',
     path: '/home/campaign',
-    icon: <AiIcons.AiFillHome />,
+    icon: <CampaignIcon />,
     cName: 'nav-text',
     path1 : '/home/campaign/insert',
 
@@ -26,7 +35,7 @@ export const SidebarData = [
   {
     title: 'Company',
     path: '/home/company',
-    icon: <IoIcons.IoIosPaper />,
+    icon: <BusinessIcon />,
     cName: 'nav-text', 
     path1 : '/home/company/insert',
   },
@@ -49,7 +58,7 @@ export const SidebarData = [
   {
     title: 'Documents',
     path: '/home/documents',
-    icon: <IoIcons.IoMdPeople />,
+    icon: <DraftsIcon />,
     cName: 'nav-text', 
     path1 : '/home/documents/insert',
     
@@ -57,7 +66,7 @@ export const SidebarData = [
   {
     title: 'FAQs',
     path: '/home/faqs',
-    icon: <FaIcons.FaEnvelopeOpenText />,
+    icon: <QuizIcon />,
     cName: 'nav-text', 
     path1 : '/home/faqs/insert',
     
@@ -65,7 +74,7 @@ export const SidebarData = [
   {
     title: 'Highlights',
     path: '/home/highlights',
-    icon: <IoIcons.IoMdHelpCircle />,
+    icon: <HighlightIcon />,
     cName: 'nav-text', 
     path1 : '/home/highlights/insert',
     
@@ -105,7 +114,7 @@ export const SidebarData = [
   {
     title: 'Press',
     path: '/home/press',
-    icon: <FaIcons.FaWpressr />,
+    icon: <InterpreterModeIcon />,
     cName: 'nav-text',
     path1 : '/home/press/insert', 
     
@@ -113,7 +122,7 @@ export const SidebarData = [
   {
     title: 'Rewards',
     path: '/home/rewards',
-    icon: <GiIcons.GiWantedReward/>,
+    icon: <StarRateIcon/>,
     cName: 'nav-text', 
     path1 : '/home/rewards/insert',
     
@@ -121,9 +130,25 @@ export const SidebarData = [
   {
     title: 'Payments',
     path: '/home/payments',
-    icon: <AiIcons.AiFillMoneyCollect/>,
+    icon: <PaymentsIcon/>,
     cName: 'nav-text', 
     path1 : '/home/payments/insert',
     
-  }
+  },
+  {
+    title: 'Users',
+    path: '/home/user-invest',
+    icon: <FiIcons.FiUsers/>,
+    cName: 'nav-text', 
+    path1 : '/home/user-invest/insert',
+    
+  },
+  {
+    title: 'Campaign Under Review',
+    path: '/home/under-review',
+    icon: <CampaignIcon/>,
+    cName: 'nav-text', 
+    // path1 : '/home/payments/insert',
+    
+  },
 ];

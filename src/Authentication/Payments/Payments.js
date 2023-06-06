@@ -41,8 +41,8 @@ getUploadedDocs();
         </div>
         <div className='row'>
           <div className='col-8' style={{marginTop:"150px", marginLeft:"320px"}}>
-            <table class="table table-dark table-striped">
-                <thead>
+          <table class="table table-hover table-bordered" style={{border:"2px solid"}}>
+                <thead className='thead'>
                   <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Campaign Id</th>
@@ -53,7 +53,7 @@ getUploadedDocs();
                     <th scope="col">Total Amount</th>
                     <th scope="col">Status</th>
                     <th scope="col">Payment Session Id</th>
-                    <th scope="col">Action</th>
+                    {/* <th scope="col">Action</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -71,7 +71,7 @@ getUploadedDocs();
                               <td scope="col">{item.total_amount}</td>
                               <td scope="col">{item.status}</td>
                               <td scope="col">{item.payment_session_id}</td>
-                              <td scope="col-2" ><CreateIcon onClick={() => {update(item)}} /></td>
+                              {/* <td scope="col-2" ><CreateIcon onClick={() => {update(item)}} /></td> */}
                           </tr>
                         </>
                       )

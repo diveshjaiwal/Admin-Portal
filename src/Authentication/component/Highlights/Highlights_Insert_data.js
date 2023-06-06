@@ -88,7 +88,7 @@ const getUploaded = async () => {
   
   try {
       const response = await authAxios.get(`${Base_url}/api/campaign/manage`);
-      console.log(response.data)
+      // console.log(response.data)
       setItems2(response.data)
       return response.data;
   }
@@ -135,7 +135,10 @@ getUploaded();
       <>
        <div className='container-fluid'>
         <div className='row'>
-            <Dashboard />
+            <Dashboard 
+            f1 = {true}
+            f2 = {false}
+            />
         </div>
         </div>
         <div className='row'>
@@ -163,8 +166,11 @@ getUploaded();
               <label for="exampleInputRegistrationnum" className="form-label">Description 1</label>
               <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={description_1} onChange={updatedescription_1}/>
 
-              <label for="exampleInputRegistrationnum" className="form-label">HighLight Image 1</label>
-              <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={highlight_image_1} onChange={updatehighlight_image_1}/>
+              {/* <label for="exampleInputRegistrationnum" className="form-label">HighLight Image 1</label>
+              <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={highlight_image_1} onChange={updatehighlight_image_1}/> */}
+
+              {/* <label className="form-label">HighLight Image 1</label>
+              <input type="file" className="form-control" name="myImage" accept="image/png, image/gif, image/jpeg"  value={highlight_image_1} onChange={updatehighlight_image_1} /> */}
 
               <label for="exampleInputRollnum" className="form-label">Title 2</label>
               <input  type="text" className="form-control" id="exampleInputRollnum" value={title_2} onChange={updatetitle_2}/>
@@ -172,8 +178,11 @@ getUploaded();
               <label for="exampleInputRegistrationnum" className="form-label">Description 2</label>
               <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={description_2} onChange={updatedescription_2}/>
 
-              <label for="exampleInputRegistrationnum" className="form-label">HighLight Image 2</label>
-              <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={highlight_image_2} onChange={updatehighlight_image_2}/>
+              {/* <label for="exampleInputRegistrationnum" className="form-label">HighLight Image 2</label>
+              <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={highlight_image_2} onChange={updatehighlight_image_2}/> */}
+
+              {/* <label className="form-label">HighLight Image 2</label>
+              <input type="file" className="form-control" name="myImage" accept="image/png, image/gif, image/jpeg"  value={highlight_image_2} onChange={updatehighlight_image_2} /> */}
 
               <label for="exampleInputRollnum" className="form-label">Title 3</label>
               <input  type="text" className="form-control" id="exampleInputRollnum" value={title_3} onChange={updatetitle_3}/>
@@ -181,8 +190,11 @@ getUploaded();
               <label for="exampleInputRegistrationnum" className="form-label">Description 3</label>
               <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={description_3} onChange={updatedescription_3}/>
 
-              <label for="exampleInputRegistrationnum" className="form-label">HighLight Image 3</label>
-              <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={highlight_image_3} onChange={updatehighlight_image_3}/>
+              {/* <label for="exampleInputRegistrationnum" className="form-label">HighLight Image 3</label>
+              <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={highlight_image_3} onChange={updatehighlight_image_3}/> */}
+
+              {/* <label className="form-label">HighLight Image 3</label>
+              <input type="file" className="form-control" name="myImage" accept="image/png, image/gif, image/jpeg"  value={highlight_image_3} onChange={updatehighlight_image_3} /> */}
 
               <label for="exampleInputRollnum" className="form-label">Title 4</label>
               <input  type="text" className="form-control" id="exampleInputRollnum" value={title_4} onChange={updatetitle_4}/>
@@ -190,8 +202,11 @@ getUploaded();
               <label for="exampleInputRegistrationnum" className="form-label">Description 4</label>
               <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={description_4} onChange={updatedescription_4}/>
 
-              <label for="exampleInputRegistrationnum" className="form-label">HighLight Image 4</label>
-              <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={highlight_image_4} onChange={updatehighlight_image_4}/>
+              {/* <label for="exampleInputRegistrationnum" className="form-label">HighLight Image 4</label>
+              <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={highlight_image_4} onChange={updatehighlight_image_4}/> */}
+
+              {/* <label className="form-label">HighLight Image 4</label>
+              <input type="file" className="form-control" name="myImage" accept="image/png, image/gif, image/jpeg"  value={highlight_image_4} onChange={updatehighlight_image_4} /> */}
           
               <button type="submit" className="btn btn-success" style={{marginTop:"30px"}} onClick={gotoAdd}>Submit</button>
           </form>

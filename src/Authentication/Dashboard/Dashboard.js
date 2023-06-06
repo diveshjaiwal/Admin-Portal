@@ -6,35 +6,38 @@ import * as IoIcons from 'react-icons/io';
 import { SidebarData } from './Sidebar';
 import './Dashboard.css';
 import { IconContext } from 'react-icons';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
+import HailIcon from '@mui/icons-material/Hail';
+import { TrendingUp } from '@mui/icons-material';
 
-function Dashboard() {
+
+function Dashboard(props) {
   const [sidebar, setSidebar] = useState(true);
-  const[flagF1, setFlagF1] = useState(false);
-  const[flagF2, setFlagF2] = useState(false);
+  const [f1, setF1] = useState(props.f1);
+  const [f2, setF2] = useState(props.f2);
   const location = window.location.pathname;
 
-  const flag1 = () => {
-   
-    setFlagF1(!flagF1)
-    setFlagF2(false)
+
+  const f1set = () => {
+    setF1(!f1)
+    setF2(false)
   }
-  const flag2 = () => {
-    setFlagF1(false)
-    setFlagF2(!flagF2)
-  }
-  const f =()=> {
-    console.log("ksndvjsm")
+
+  const f2set = () => {
+    setF2(!f2)
+    setF1(false)
   }
   
 
   return (
     <>
       <div className="row" >
-        <div className="col" style={{position:"fixed",padding:"0"}}>
+        <div className="col" style={{position:"fixed",padding:"0", zIndex:"1"}}>
               <nav class="navbar bg-body-tertiary">
                 <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:"200%",padding:"0 1rem"}} >
                 <div style={{width:"60%",display:"flex",alignItems:"center",justifyContent:"flex-start"}}>
-                  <Link exact to="/home"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdMK0ZGnsWPRCRrfi6i_qQXJudzMEc7HHq2ZwmAgrSe_MVbQfHAv9Y4bOsL9YyP2RV_gg&usqp=CAU" alt="_random" style={{height:"60px", weight:"80px",borderRadius:"50%",marginRight:"10px"}} /></Link>
+                  <Link exact to="/home"><img src="/Logo_2.png" alt="_random" style={{height:"60px", weight:"80px",borderRadius:"50%",marginRight:"10px"}} /></Link>
                   
                   <h1 style={{color:"#fff",alignSelf:"flex-start"}}>Mynt Admin Portal</h1>
                   </div>
@@ -56,20 +59,27 @@ function Dashboard() {
                       <span >{SidebarData[0].title}</span>
                     </Link>
                   </li>
-            <li  className="nav-text" onClick={flag1}  style={{marginLeft:"13px",cursor: "pointer"}} > <IoIcons.IoIosPaper /><span style={{color:"#ffff"}}>Founder</span>
+            {/* <a className="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1"  style={{marginLeft:"13px",cursor: "pointer"}}>
+            <IoIcons.IoIosPaper /><span style={{color:"#ffff"}}>Founder</span>
+              </a> */}
+              <li  className="nav-text" onClick={f1set}
+              style={{marginLeft:"13px",cursor:"pointer"}}> <HailIcon style={{color:"#ffff"}} /> <span style={{color:"#ffff"}}>Founder</span>
             </li>
-            { 
-              flagF1  ?
-              <ul >
-                  <li key={1} className={SidebarData[1].cName} 
+           
+              {/* <div className="collapse multi-collapse" id="multiCollapseExample1"> */}
+              {
+                f1&&
+              <ul>
+                  <li  key={1} className={SidebarData[1].cName}
                   style={location == SidebarData[1].path || location == SidebarData[1].path1 ?  {backgroundColor : "#1a83ff", borderRadius:"15px"} : null}
                     >
+
                       <Link  to={SidebarData[1].path} >
                         {SidebarData[1].icon}
-                        <span >{SidebarData[1].title}</span>
+                        <span  >{SidebarData[1].title}</span>
                       </Link>
                     </li>
-                    <li key={2} className={SidebarData[2].cName} 
+                    <li  key={2} className={SidebarData[2].cName} 
                             style={location == SidebarData[2].path || location == SidebarData[2].path1 ? {backgroundColor : "#1a83ff", borderRadius:"15px"} : null}
                           >
                             <Link  to={SidebarData[2].path}>
@@ -149,14 +159,18 @@ function Dashboard() {
                               <span >{SidebarData[13].title}</span>
                             </Link>
                     </li> 
-            </ul> : null
+            </ul> 
+           
             }
-
-            <li  className="nav-text"
-             onClick={flag2} style={{marginLeft:"13px",cursor:"pointer"}}> <IoIcons.IoIosPaper /> <span style={{color:"#ffff"}}>Investor</span>
+            {/* </div> */}
+            <li  className="nav-text"  
+            onClick={f2set}
+              style={{marginLeft:"13px",cursor:"pointer"}}> <EmojiPeopleIcon style={{color:"#ffff"}} /> <span style={{color:"#ffff"}} >Investor</span>
             </li>
+             {/* <button className="btn btn-primary dropdown-toggle nav-text"  onClick={f2set} type="button" data-toggle="dropdown">Investor
+              <span className="caret"></span></button> */}
             {
-               flagF2 ? 
+              f2&&
               <ul>
                     <li key={8} className={SidebarData[8].cName}
                     style={location == SidebarData[8].path || location == SidebarData[8].path1 ? {backgroundColor : "#1a83ff", borderRadius:"15px"} : null}
@@ -174,17 +188,19 @@ function Dashboard() {
                                 <span>{SidebarData[9].title}</span>
                               </Link>
                       </li> 
-                      <li key={10} className={SidebarData[10].cName}
-                              style={location == SidebarData[10].path || location == SidebarData[10].path1 ? {backgroundColor : "#1a83ff", borderRadius:"15px"} : null}
+                      <li key={15} className={SidebarData[15].cName}
+                              style={location == SidebarData[15].path || location == SidebarData[15].path1 ? {backgroundColor : "#1a83ff", borderRadius:"15px"} : null}
                             >
-                              <Link to={SidebarData[10].path}>
-                                {SidebarData[10].icon}
-                                <span>{SidebarData[10].title}</span>
+                              <Link to={SidebarData[15].path}>
+                                {SidebarData[15].icon}
+                                <span>{SidebarData[15].title}</span>
                               </Link>
                       </li> 
-                </ul>
-                : null
+                </ul> 
+             
+               
             }
+         
 
           <li key={14} className={SidebarData[14].cName}
                     style={location == SidebarData[14].path || location == SidebarData[14].path1 ? {backgroundColor : "#1a83ff", borderRadius:"15px"} : null}
@@ -192,6 +208,15 @@ function Dashboard() {
                     <Link to={SidebarData[14].path}>
                       {SidebarData[14].icon}
                       <span>{SidebarData[14].title}</span>
+                    </Link>
+                  </li>
+
+                  <li key={16} className={SidebarData[16].cName}
+                    style={location == SidebarData[16].path || location == SidebarData[16].path1 ? {backgroundColor : "#1a83ff", borderRadius:"15px"} : null}
+                  >
+                    <Link to={SidebarData[16].path}>
+                      {SidebarData[16].icon}
+                      <span>{SidebarData[16].title}</span>
                     </Link>
                   </li>
             
@@ -207,7 +232,7 @@ function Dashboard() {
                   </li>
                 );
               })} */}
-            </ul>
+            </ul> 
           </nav>
         </IconContext.Provider>
       </div>

@@ -5,6 +5,9 @@ import CreateIcon from '@mui/icons-material/Create';
 import { useNavigate } from 'react-router-dom';
 import Base_url from "../Base_url";
 import { authAxios } from '../../../Services/auth.service';
+import AddIcon from '@mui/icons-material/Add';
+import Button from '@mui/material/Button';
+import "../../Comp_css/Component.css";
 
 
 function Rewards() {
@@ -19,7 +22,7 @@ function Rewards() {
   
       try {
           const response = await authAxios.get(`${Base_url}/api/rewards/manage`);
-          console.log(response.data)
+          // console.log(response.data)
           setItems(response.data)
           return response.data;
       }
@@ -42,15 +45,18 @@ const goToAdd = () =>{
       <div className='container-fluid'>
             <div className='row'>
               
-                <Dashboard />
+                <Dashboard 
+                 f1 = {true}
+                 f2 = {false}
+                 />
               
             </div>
         </div>
         <div className='row'>
           <div className='col-8' style={{marginTop:"150px", marginLeft:"350px"}}>
-          <button type="button" class="btn btn-secondary btn-lg" onClick={goToAdd}>Add Rewards</button>
-            <table class="table table-dark table-striped">
-                <thead>
+          <Button variant="contained" className="addIcon" style={{marginBottom:"1%"}} onClick={goToAdd} >Add Rewards<AddIcon/></Button>
+            <table class="table table-hover table-bordered" style={{border:"2px solid"}}>
+                <thead className='thead'>
                   <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Campaign Id</th>
@@ -71,7 +77,10 @@ const goToAdd = () =>{
                           <td scope="col-2" >{item.amount}</td>
                           <td scope="col-2" >{item.product_name}</td>
                           <td scope="col-2" >{item.discounted_price}</td>
-                          <td scope="col-2" ><CreateIcon onClick={() => {update(item)}} /></td>
+                          <td scope="col-2" >  <button className="btn btn1">
+                                    <CreateIcon 
+                                  onClick={() => {update(item)}} />
+                            </button></td>
                           </tr>
                         </>
                       )

@@ -43,6 +43,20 @@ import Rewards_Insert_data from "./Authentication/component/Rewards/Rewards_Inse
 import Documents from "./Authentication/component/Documents/Documents";
 import Documents_insert_data from "./Authentication/component/Documents/Documents_insert_data";
 import Documents_Form from "./Authentication/component/Documents/Documents_Form";
+import User_Invest from "./Authentication/component/User_Investor/User_Invest";
+import User_Invest_Insert from "./Authentication/component/User_Investor/User_Invest_Insert";
+import User_Invest_Form from "./Authentication/component/User_Investor/User_Invest_Form";
+import CampUnderReview from "./Authentication/component/CampUnderReview/CampUnderReview";
+import CampUnderUpdate from "./Authentication/component/CampUnderReview/CampUnderUpdate";
+import CampCompany from "./Authentication/component/CampUnderReview/CampaignRelatedDetials.js/CampCompany";
+import CampDocument from "./Authentication/component/CampUnderReview/CampaignRelatedDetials.js/CampDocument";
+import CampPeople from "./Authentication/component/CampUnderReview/CampaignRelatedDetials.js/CampPeople";
+import CampPress from "./Authentication/component/CampUnderReview/CampaignRelatedDetials.js/CampPress";
+import CampHighlight from "./Authentication/component/CampUnderReview/CampaignRelatedDetials.js/CampHighlight";
+import CampReward from "./Authentication/component/CampUnderReview/CampaignRelatedDetials.js/CampReward";
+import CampFaqs from "./Authentication/component/CampUnderReview/CampaignRelatedDetials.js/CampFaqs";
+import CampCampaign from "./Authentication/component/CampUnderReview/CampaignRelatedDetials.js/CampCampaign";
+
 
 
 
@@ -94,6 +108,19 @@ const App = () =>{
     <Route path="/home/rewards/insert" element={<Rewards_Insert_data />} exact/>
     <Route path="/home/documents/insert" element={<Documents_insert_data />} exact/>
     <Route path ="/home/payments" element={<Payments   />} exact />
+    <Route path="/home/user-invest" element={<User_Invest />} exact />
+    <Route path="/home/user-invest/insert" element={<User_Invest_Insert/>} exact />
+    <Route path="/user-invest/:id" element={<User_Invest_Form />} exact/>  
+    <Route path="/home/under-review" element={<CampUnderReview />} exact/>  
+    <Route path="/home/under-update/:id" element={<CampUnderUpdate />} exact/>  
+    <Route path="/home/under-update/:id/campcompany" element={<CampCompany />} exact/> 
+    <Route path="/home/under-update/:id/campdocument" element={<CampDocument />} exact/> 
+    <Route path="/home/under-update/:id/camppeople" element={<CampPeople />} exact/> 
+    <Route path="/home/under-update/:id/camppress" element={<CampPress />} exact/> 
+    <Route path="/home/under-update/:id/campcampi" element={<CampCampaign />} exact/>
+    <Route path="/home/under-update/:id/campfaqs" element={<CampFaqs />} exact/>
+    <Route path="/home/under-update/:id/campreward" element={<CampReward />} exact/> 
+    <Route path="/home/under-update/:id/camphighlight" element={<CampHighlight />} exact/> 
     </Routes>
     </>
   )

@@ -77,7 +77,10 @@ navigator("/home/investor_consents")
           <div className='container-fluid'>
         <div className='row'>
           
-            <Dashboard />
+            <Dashboard 
+            f1 = {false}
+            f2 = {true}
+            />
           
         </div>
         </div>

@@ -5,6 +5,9 @@ import CreateIcon from '@mui/icons-material/Create';
 import { useNavigate } from 'react-router-dom';
 import Base_url from "../Base_url";
 import { authAxios } from '../../../Services/auth.service';
+import AddIcon from '@mui/icons-material/Add';
+import Button from '@mui/material/Button';
+import "../../Comp_css/Component.css";
 
 function Investor_consents() {
   const navigator = useNavigate();
@@ -41,15 +44,18 @@ const goToAdd = () =>{
       <div className='container-fluid'>
             <div className='row'>
               
-                <Dashboard />
+                <Dashboard 
+                   f1 = {false}
+                   f2 = {true}
+                 />
               
             </div>
         </div>
         <div className='row'>
           <div className='col-8' style={{marginTop:"150px", marginLeft:"350px"}}>
-          <button type="button" class="btn btn-secondary btn-lg" onClick={goToAdd}>Add Investor Consent</button>
-            <table class="table table-dark table-striped">
-                <thead>
+          <Button variant="contained" className="addIcon" style={{marginBottom:"1%"}} onClick={goToAdd} >Add Investor Consents<AddIcon/></Button>
+            <table class="table table-hover table-bordered" style={{border:"2px solid"}}>
+                <thead className='thead'>
                   <tr>
                     <th scope="col">Id</th>
                     <th scope="col">User Id</th>
@@ -74,7 +80,10 @@ const goToAdd = () =>{
                           <td scope="col-2" >{item.diversification_consent ? "true": "false"}</td>
                           <td scope="col-2" >{item.cancellation_consent ? "true": "false"}</td>
                           <td scope="col-2" >{item.research_consent ? "true": "false"}</td>
-                          <td scope="col-2" ><CreateIcon onClick={()=> {update(item)}} /></td>
+                          <td scope="col-2" >  <button className="btn btn1">
+                                    <CreateIcon 
+                                  onClick={() => {update(item)}} />
+                            </button></td>
                           </tr>
                         </>
                       )

@@ -9,7 +9,7 @@ const Highlights_Form = () =>{
 const location1 = useLocation();
   const[title, settitle] = useState(location1.state.bio.title);
   const[description , setdescription ]= useState(location1.state.bio.description);
-  const[highlight_image , sethighlight_image ]= useState(location1.state.bio.highlight_image);
+  const[highlight_image , sethighlight_image ]= useState();
   const[status,setStatus] = useState(location1.state.bio.status);
   const [campaign_id , setcampaign_id] = useState(location1.state.bio.campaign_id);
   const[items2 , setItems2] =useState([]); 
@@ -35,12 +35,12 @@ const location1 = useLocation();
 
   useEffect(()=>{
     
-
+  // console.log("gfshdj")
     const getUploaded = async () => {
       
       try {
           const response = await authAxios.get(`${Base_url}/api/campaign/manage`);
-          console.log(response.data)
+          // console.log(response.data)
           setItems2(response.data)
           return response.data;
       }
@@ -71,7 +71,10 @@ const location1 = useLocation();
       <>
        <div className='container-fluid'>
         <div className='row'>
-            <Dashboard />
+            <Dashboard 
+            f1 = {true}
+            f2 = {false}
+            />
         </div>
         </div>
         <div className='row'>
@@ -111,8 +114,12 @@ const location1 = useLocation();
               <label for="exampleInputRegistrationnum" className="form-label">Description</label>
               <input  type="text" className="form-control" id="exampleInputeRegistrationnum" value={description} onChange={updatedescription}/>
 
-              <label for="exampleInputRollnum" className="form-label">HighLight Image</label>
-              <input  type="text" className="form-control" id="exampleInputRollnum" value={highlight_image} onChange={updatehighlight_image}/>
+              {/* <label for="exampleInputRollnum" className="form-label">HighLight Image</label>
+              <input  type="text" className="form-control" id="exampleInputRollnum" value={highlight_image} onChange={updatehighlight_image}/> */}
+
+              <label className="form-label">HighLight Image : </label>
+              <input type="file" className="form-control" name="myImage" accept="image/png, image/gif, image/jpeg"  value={highlight_image} onChange={updatehighlight_image} />
+
           
               <button type="submit" className="btn btn-success" style={{marginTop:"30px"}}>Submit</button>
           </form>
